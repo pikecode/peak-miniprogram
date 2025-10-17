@@ -3,7 +3,7 @@
     <!-- 自定义顶部导航栏 -->
     <view class="custom-navbar">
       <view class="navbar-content">
-        <text class="brand-logo">RUIZHU</text>
+        <image class="brand-logo" src="/static/images/logo.jpg" mode="aspectFit"></image>
       </view>
     </view>
 
@@ -180,11 +180,9 @@ export default {
   }
 
   .brand-logo {
-    font-size: 48rpx;
-    font-weight: 700;
-    letter-spacing: 4rpx;
-    color: #000000;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    height: 48rpx;
+    width: auto;
+    max-width: 200rpx;
   }
 
   .navbar-actions {

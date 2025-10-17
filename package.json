@@ -1,7 +1,7 @@
 {
-  "name": "peak-miniprogram",
+  "name": "ruizhu-miniprogram",
   "version": "1.0.0",
-  "description": "Peak miniprogram built with uniapp",
+  "description": "Ruizhu miniprogram built with uniapp",
   "main": "main.js",
   "scripts": {
     "dev:mp-weixin": "uni -p mp-weixin",

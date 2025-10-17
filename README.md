@@ -1,4 +1,4 @@
-# Peak 小程序
+# Ruizhu 小程序
 
 基于 uniapp 框架开发的跨平台小程序项目。
 
@@ -12,7 +12,7 @@
 ## 项目结构
 
 ```
-peak-miniprogram/
+ruizhu-miniprogram/
 ├── src/                    # 源代码目录
 │   ├── pages/             # 页面文件
 │   │   ├── index/         # 首页（含轮播图、会员礼遇、商品推荐）

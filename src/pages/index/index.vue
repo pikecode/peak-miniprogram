@@ -3,7 +3,7 @@
     <!-- 自定义顶部导航栏 -->
     <view class="custom-navbar">
       <view class="navbar-content">
-        <text class="brand-logo">PEAK</text>
+        <text class="brand-logo">RUIZHU</text>
         <view class="navbar-actions">
           <text class="icon-search">⌕</text>
           <text class="icon-menu">⋯</text>
@@ -85,7 +85,7 @@ export default {
       currentBannerIndex: 0,
       bannerList: [
         {
-          title: 'Peak Collection',
+          title: 'Ruizhu Collection',
           subtitle: '即刻探索',
           image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80'
         },
@@ -135,7 +135,7 @@ export default {
     }
   },
   onLoad() {
-    console.log('Peak 首页加载完成')
+    console.log('Ruizhu 首页加载完成')
   },
   methods: {
     onSwiperChange(e) {

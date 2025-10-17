@@ -19,14 +19,21 @@
         :circular="true"
         @change="onSwiperChange"
       >
-        <!-- 第一个轮播项：动画展示 -->
+        <!-- 第一个轮播项：品牌展示 -->
         <swiper-item>
-          <view class="banner-item video-item">
+          <view class="banner-item">
             <image
               class="banner-image"
-              src="/static/animation.webp"
+              src="/static/images/product/120251017222242.jpg"
               mode="aspectFill"
             ></image>
+            <view class="banner-overlay">
+              <text class="banner-title">RUIZHU</text>
+              <view class="banner-subtitle">
+                <text class="subtitle-text">奢华品牌</text>
+                <view class="subtitle-line"></view>
+              </view>
+            </view>
           </view>
         </swiper-item>
 
@@ -292,18 +299,6 @@ export default {
     }
   }
 
-  /* 视频项特殊样式 */
-  .video-item {
-    background: #000000;
-    position: relative;
-
-    .banner-video {
-      width: 100%;
-      height: 100%;
-      display: block;
-      object-fit: cover;
-    }
-  }
 }
 
 /* 会员礼遇区域 */

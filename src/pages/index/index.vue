@@ -175,14 +175,14 @@ export default {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    padding: 20rpx 40rpx;
+    padding: 12rpx 40rpx;
     height: 88rpx;
   }
 
   .brand-logo {
-    height: 48rpx;
+    height: 64rpx;
     width: auto;
-    max-width: 200rpx;
+    max-width: 280rpx;
   }
 
   .navbar-actions {

@@ -312,18 +312,15 @@ export default {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    max-height: 100%;
 
     .featured-image {
       width: 100%;
-      height: 520rpx;
-      flex-shrink: 0;
+      height: 595rpx;
       object-fit: cover;
     }
 
     .featured-info {
       padding: 24rpx;
-      flex: 0;
 
       .featured-name {
         display: block;
@@ -346,8 +343,6 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 16rpx;
-    max-height: 100%;
-    overflow: hidden;
 
     .product-card {
       background: #f5f5f5;
@@ -360,14 +355,12 @@ export default {
 
       .product-image {
         width: 100%;
-        height: 220rpx;
-        flex-shrink: 0;
+        height: 245rpx;
         object-fit: cover;
       }
 
       .product-info {
         padding: 16rpx;
-        flex: 0;
 
         .product-name {
           display: block;

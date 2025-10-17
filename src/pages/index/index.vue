@@ -19,10 +19,14 @@
         :circular="true"
         @change="onSwiperChange"
       >
-        <!-- 第一个轮播项：WebP 动画 -->
+        <!-- 第一个轮播项：动画展示 -->
         <swiper-item>
           <view class="banner-item video-item">
-            <image class="banner-image" src="/static/animation.webp" mode="aspectFill"></image>
+            <image
+              class="banner-image"
+              src="/static/animation.webp"
+              mode="aspectFill"
+            ></image>
           </view>
         </swiper-item>
 
@@ -291,6 +295,14 @@ export default {
   /* 视频项特殊样式 */
   .video-item {
     background: #000000;
+    position: relative;
+
+    .banner-video {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
   }
 }
 

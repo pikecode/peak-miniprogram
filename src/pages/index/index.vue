@@ -7,7 +7,7 @@
       </view>
     </view>
 
-    <!-- 轮播图区域 -->
+    <!-- 轮播图区域（包含动画和其他banner） -->
     <view class="banner-section">
       <swiper
         class="banner-swiper"
@@ -19,6 +19,14 @@
         :circular="true"
         @change="onSwiperChange"
       >
+        <!-- 第一个轮播项：WebP 动画 -->
+        <swiper-item>
+          <view class="banner-item video-item">
+            <image class="banner-image" src="/static/animation.webp" mode="aspectFill"></image>
+          </view>
+        </swiper-item>
+
+        <!-- 其他轮播项 -->
         <swiper-item v-for="(item, index) in bannerList" :key="index">
           <view class="banner-item">
             <image class="banner-image" :src="item.image" mode="aspectFill"></image>
@@ -75,6 +83,10 @@
 export default {
   data() {
     return {
+      // 视频相关
+      videoUrl: '/static/video.mp4',
+      showPlayBtn: true,
+
       indicatorColor: 'rgba(255, 255, 255, 0.5)',
       indicatorActiveColor: '#ffffff',
       currentBannerIndex: 0,
@@ -133,6 +145,20 @@ export default {
     console.log('Ruizhu 首页加载完成')
   },
   methods: {
+    onVideoImageTap() {
+      // 点击视频封面，可以打开视频播放器或跳转到视频详情
+      uni.navigateTo({
+        url: '/pages/video-player/video-player',  // 需要创建此页面
+        fail: () => {
+          // 如果页面不存在，显示提示
+          uni.showToast({
+            title: '视频播放器开发中',
+            icon: 'none'
+          })
+        }
+      })
+    },
+
     onSwiperChange(e) {
       this.currentBannerIndex = e.detail.current
     },
@@ -260,6 +286,11 @@ export default {
       height: 2rpx;
       background: #ffffff;
     }
+  }
+
+  /* 视频项特殊样式 */
+  .video-item {
+    background: #000000;
   }
 }
 

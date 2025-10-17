@@ -121,20 +121,20 @@ export default {
       productSlides: [
         {
           featured: {
-            name: '定制皮革手袋',
-            price: '28,900',
-            image: 'https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=600&q=80'
+            name: '定制时尚鞋',
+            price: '1999',
+            image: '/static/images/product/120251017222234.jpg'
           },
           products: [
             {
-              name: '限量版钱包',
+              name: '高级配饰',
               price: '12,500',
-              image: 'https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?w=400&q=80'
+              image: '/static/images/product/120251017184152.jpg'
             },
             {
-              name: '手工皮革卡包',
+              name: '高级配饰',
               price: '5,800',
-              image: 'https://images.unsplash.com/photo-1627123424574-724758594e93?w=400&q=80'
+              image: '/static/images/product/120251017184157.jpg'
             }
           ]
         },
@@ -142,18 +142,18 @@ export default {
           featured: {
             name: '奢华商务包',
             price: '35,600',
-            image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&q=80'
+            image: '/static/images/product/120251017222229.jpg'
           },
           products: [
             {
-              name: '经典卡夹',
+              name: '高级配饰',
               price: '8,900',
-              image: 'https://images.unsplash.com/photo-1627123424574-724758594e93?w=400&q=80'
+              image: '/static/images/product/120251017184201.jpg'
             },
             {
-              name: '高级钱包',
+              name: '高级配饰',
               price: '15,800',
-              image: 'https://images.unsplash.com/photo-1591561954557-26941169b49e?w=400&q=80'
+              image: '/static/images/product/120251017184205.jpg'
             }
           ]
         },
@@ -161,38 +161,38 @@ export default {
           featured: {
             name: '时尚背包系列',
             price: '22,500',
-            image: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=600&q=80'
+            image: '/static/images/product/120251017222238.jpg'
           },
           products: [
             {
-              name: '迷你手袋',
+              name: '高级配饰',
               price: '18,900',
-              image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&q=80'
+              image: '/static/images/product/120251017184212.jpg'
             },
             {
-              name: '信封包',
+              name: '高级配饰',
               price: '9,200',
-              image: 'https://images.unsplash.com/photo-1564422167509-4f3763b1c07d?w=400&q=80'
+              image: '/static/images/product/120251017184216.jpg'
             }
           ]
         }
       ],
       categories: [
         {
-          name: '专属箱包',
-          image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&q=80'
+          name: '高级配饰',
+          image: '/static/images/product/120251017184219.jpg'
         },
         {
           name: '高级配饰',
-          image: 'https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=400&q=80'
+          image: '/static/images/product/120251017184152.jpg'
         },
         {
           name: '定制鞋履',
-          image: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=400&q=80'
+          image: '/static/images/product/120251017222234.jpg'
         },
         {
-          name: '皮具系列',
-          image: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=400&q=80'
+          name: '高级配饰',
+          image: '/static/images/product/120251017184201.jpg'
         }
       ]
     }
@@ -303,20 +303,27 @@ export default {
   gap: 24rpx;
   padding: 0 40rpx;
   height: 100%;
+  align-items: flex-start;
 
   .featured-product {
     flex: 1;
     background: #f5f5f5;
     border-radius: 8rpx;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    max-height: 100%;
 
     .featured-image {
       width: 100%;
-      height: 600rpx;
+      height: 520rpx;
+      flex-shrink: 0;
+      object-fit: cover;
     }
 
     .featured-info {
       padding: 24rpx;
+      flex: 0;
 
       .featured-name {
         display: block;
@@ -338,26 +345,38 @@ export default {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 24rpx;
+    gap: 16rpx;
+    max-height: 100%;
+    overflow: hidden;
 
     .product-card {
       background: #f5f5f5;
       border-radius: 8rpx;
       overflow: hidden;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
 
       .product-image {
         width: 100%;
-        height: 280rpx;
+        height: 220rpx;
+        flex-shrink: 0;
+        object-fit: cover;
       }
 
       .product-info {
-        padding: 20rpx;
+        padding: 16rpx;
+        flex: 0;
 
         .product-name {
           display: block;
           font-size: 26rpx;
           color: #333333;
-          margin-bottom: 10rpx;
+          margin-bottom: 8rpx;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
 
         .product-price {
@@ -433,10 +452,14 @@ export default {
       height: 340rpx;
       border-radius: 8rpx;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
 
       .category-image {
         width: 100%;
         height: 100%;
+        flex: 1;
+        object-fit: cover;
       }
 
       .category-overlay {
@@ -445,7 +468,11 @@ export default {
         left: 0;
         right: 0;
         padding: 30rpx;
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3), transparent);
+        min-height: 120rpx;
+        display: flex;
+        align-items: flex-end;
+        z-index: 2;
 
         .category-name {
           display: block;
@@ -453,6 +480,8 @@ export default {
           color: #ffffff;
           font-weight: 500;
           text-align: center;
+          width: 100%;
+          text-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.5);
         }
       }
     }

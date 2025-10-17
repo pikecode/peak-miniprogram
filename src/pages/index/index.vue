@@ -19,7 +19,7 @@
         :circular="true"
         @change="onSwiperChange"
       >
-        <!-- 第一个轮播项：动画展示（Let's Encrypt HTTPS） -->
+        <!-- 第一个轮播项：动画展示 -->
         <swiper-item>
           <view class="banner-item video-item">
             <image

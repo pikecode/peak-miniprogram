@@ -121,78 +121,78 @@ export default {
       productSlides: [
         {
           featured: {
-            name: '定制时尚鞋',
-            price: '1999',
-            image: '/static/images/product/120251017222234.jpg'
+            name: '鞋子1',
+            price: '1799',
+            image: '/static/images/product/鞋子1.jpg'
           },
           products: [
             {
-              name: '高级配饰',
-              price: '12,500',
-              image: '/static/images/product/120251017184152.jpg'
+              name: '珠宝',
+              price: '5800',
+              image: '/static/images/product/饰品184152.jpg'
             },
             {
-              name: '高级配饰',
-              price: '5,800',
-              image: '/static/images/product/120251017184157.jpg'
+              name: '珠宝',
+              price: '7500',
+              image: '/static/images/product/饰品184157.jpg'
             }
           ]
         },
         {
           featured: {
-            name: '奢华商务包',
-            price: '35,600',
-            image: '/static/images/product/120251017222229.jpg'
+            name: '服饰2',
+            price: '2800',
+            image: '/static/images/product/服饰2.jpg'
           },
           products: [
             {
-              name: '高级配饰',
-              price: '8,900',
-              image: '/static/images/product/120251017184201.jpg'
+              name: '珠宝',
+              price: '8900',
+              image: '/static/images/product/饰品184201.jpg'
             },
             {
-              name: '高级配饰',
-              price: '15,800',
-              image: '/static/images/product/120251017184205.jpg'
+              name: '珠宝',
+              price: '9800',
+              image: '/static/images/product/饰品184205.jpg'
             }
           ]
         },
         {
           featured: {
-            name: '时尚背包系列',
-            price: '22,500',
-            image: '/static/images/product/120251017222238.jpg'
+            name: '服饰1',
+            price: '3500',
+            image: '/static/images/product/服饰1.jpg'
           },
           products: [
             {
-              name: '高级配饰',
-              price: '18,900',
-              image: '/static/images/product/120251017184212.jpg'
+              name: '珠宝',
+              price: '6500',
+              image: '/static/images/product/饰品184212.jpg'
             },
             {
-              name: '高级配饰',
-              price: '9,200',
-              image: '/static/images/product/120251017184216.jpg'
+              name: '珠宝',
+              price: '10000',
+              image: '/static/images/product/饰品184216.jpg'
             }
           ]
         }
       ],
       categories: [
         {
-          name: '高级配饰',
-          image: '/static/images/product/120251017184219.jpg'
+          name: '珠宝',
+          image: '/static/images/product/饰品184219.jpg'
         },
         {
-          name: '高级配饰',
-          image: '/static/images/product/120251017184152.jpg'
+          name: '珠宝',
+          image: '/static/images/product/饰品184208.jpg'
         },
         {
-          name: '定制鞋履',
-          image: '/static/images/product/120251017222234.jpg'
+          name: '鞋子',
+          image: '/static/images/product/鞋子1.jpg'
         },
         {
-          name: '高级配饰',
-          image: '/static/images/product/120251017184201.jpg'
+          name: '香水',
+          image: '/static/images/product/香水.jpg'
         }
       ]
     }

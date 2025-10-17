@@ -16,7 +16,7 @@
     {
       "path": "pages/gifts/gifts",
       "style": {
-        "navigationBarTitleText": "礼赠甄选"
+        "navigationBarTitleText": "VIP私人定制"
       }
     },
     {
@@ -54,7 +54,7 @@
       },
       {
         "pagePath": "pages/gifts/gifts",
-        "text": "礼赠甄选"
+        "text": "VIP私人定制"
       },
       {
         "pagePath": "pages/cart/cart",

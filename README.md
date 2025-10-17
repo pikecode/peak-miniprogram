@@ -17,7 +17,7 @@ peak-miniprogram/
 │   ├── pages/             # 页面文件
 │   │   ├── index/         # 首页（含轮播图、会员礼遇、商品推荐）
 │   │   ├── category/      # 分类页
-│   │   ├── gifts/         # 礼赠甄选页
+│   │   ├── gifts/         # VIP私人定制页
 │   │   ├── cart/          # 购物袋页
 │   │   └── profile/       # 个人中心页
 │   ├── static/            # 静态资源
@@ -47,7 +47,7 @@ peak-miniprogram/
 ### 底部导航
 - ✅ 首页
 - ✅ 分类
-- ✅ 礼赠甄选
+- ✅ VIP私人定制
 - ✅ 购物袋
 - ✅ 我的
 

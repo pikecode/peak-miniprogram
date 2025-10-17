@@ -4,11 +4,6 @@
     <view class="custom-navbar">
       <view class="navbar-content">
         <text class="brand-logo">RUIZHU</text>
-        <view class="navbar-actions">
-          <text class="icon-search">⌕</text>
-          <text class="icon-menu">⋯</text>
-          <text class="icon-user">◯</text>
-        </view>
       </view>
     </view>
 
@@ -179,7 +174,7 @@ export default {
   .navbar-content {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     padding: 20rpx 40rpx;
     height: 88rpx;
   }

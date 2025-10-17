@@ -177,27 +177,31 @@ export default {
           ]
         }
       ],
-      categories: [
-        {
-          name: '珠宝',
-          image: '/static/images/product/饰品184219.jpg'
-        },
-        {
-          name: '珠宝',
-          image: '/static/images/product/饰品184208.jpg'
-        },
-        {
-          name: '鞋子',
-          image: '/static/images/product/鞋子1.jpg'
-        },
-        {
-          name: '香水',
-          image: '/static/images/product/香水.jpg'
-        }
+      categories: [],
+      jewelryImages: [
+        '/static/images/product/饰品184152.jpg',
+        '/static/images/product/饰品184157.jpg',
+        '/static/images/product/饰品184201.jpg',
+        '/static/images/product/饰品184205.jpg',
+        '/static/images/product/饰品184208.jpg',
+        '/static/images/product/饰品184212.jpg',
+        '/static/images/product/饰品184216.jpg',
+        '/static/images/product/饰品184219.jpg'
       ]
     }
   },
+  onLoad() {
+    this.generateCategories()
+  },
   methods: {
+    generateCategories() {
+      // 随机生成4个珠宝定制系列
+      const randomJewelry = this.jewelryImages.sort(() => Math.random() - 0.5).slice(0, 4)
+      this.categories = randomJewelry.map(image => ({
+        name: '高级配饰',
+        image: image
+      }))
+    },
     switchTab(tab) {
       this.activeTab = tab
       // 这里可以加载不同的产品数据

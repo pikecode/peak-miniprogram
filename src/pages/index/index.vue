@@ -19,12 +19,12 @@
         :circular="true"
         @change="onSwiperChange"
       >
-        <!-- 第一个轮播项：动画展示（CDN WebP） -->
+        <!-- 第一个轮播项：动画展示（测试WebP） -->
         <swiper-item>
           <view class="banner-item video-item">
             <image
               class="banner-image"
-              src="http://47.92.236.28:8080/animation.webp"
+              src="http://47.92.236.28:8080/test.webp"
               mode="aspectFill"
               :webp="true"
             ></image>

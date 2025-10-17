@@ -19,23 +19,15 @@
         :circular="true"
         @change="onSwiperChange"
       >
-        <!-- 第一个轮播项：视频展示 -->
+        <!-- 第一个轮播项：动画展示（CDN WebP） -->
         <swiper-item>
           <view class="banner-item video-item">
-            <video
-              class="banner-video"
-              :src="videoUrl"
-              autoplay="true"
-              muted="true"
-              loop="true"
-              controls="false"
-              show-center-play-btn="false"
-              show-play-btn="false"
-              show-fullscreen-btn="false"
-              show-mute-btn="false"
-              show-progress="false"
-              show-casting="false"
-            ></video>
+            <image
+              class="banner-image"
+              src="http://47.92.236.28:8080/animation.webp"
+              mode="aspectFill"
+              :webp="true"
+            ></image>
           </view>
         </swiper-item>
 

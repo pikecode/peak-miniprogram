@@ -2,12 +2,16 @@
   <view class="page">
     <!-- 搜索栏 -->
     <view class="search-bar">
-      <input
-        type="text"
-        placeholder="搜索商品"
-        class="search-input"
-        @input="onSearchInput"
-      />
+      <view class="search-wrapper">
+        <input
+          type="text"
+          placeholder="搜索商品"
+          class="search-input"
+          v-model="searchKeyword"
+          @input="onSearchInput"
+        />
+        <view v-if="searchKeyword" class="clear-btn" @tap="clearSearch">✕</view>
+      </view>
     </view>
 
     <!-- 分类和排序筛选 -->
@@ -39,7 +43,26 @@
 
     <!-- 商品网格 -->
     <view class="products-section">
-      <view class="product-grid">
+      <!-- 骨架屏加载状态 -->
+      <view v-if="isLoading" class="product-grid">
+        <view
+          v-for="(_, index) in 4"
+          :key="'skeleton-' + index"
+          class="product-item skeleton-item"
+        >
+          <view class="product-image-wrapper">
+            <view class="skeleton-image"></view>
+          </view>
+          <view class="product-info">
+            <view class="skeleton-text skeleton-title"></view>
+            <view class="skeleton-text skeleton-category"></view>
+            <view class="skeleton-text skeleton-price"></view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 实际内容 -->
+      <view v-else class="product-grid">
         <view
           v-for="(product, index) in filteredProducts"
           :key="index"
@@ -51,6 +74,7 @@
               class="product-image"
               :src="product.image"
               mode="aspectFill"
+              @load="onImageLoad"
             ></image>
             <view v-if="product.isNew" class="product-badge">新品</view>
           </view>
@@ -65,7 +89,7 @@
       </view>
 
       <!-- 空状态 -->
-      <view v-if="filteredProducts.length === 0" class="empty-state">
+      <view v-if="!isLoading && filteredProducts.length === 0" class="empty-state">
         <text class="empty-text">未找到相关商品</text>
       </view>
     </view>
@@ -79,6 +103,7 @@ export default {
       searchKeyword: '',
       activeCategory: 0,
       activeSortIndex: 0,
+      isLoading: true,
       categories: [
         { id: 'all', name: '全部' },
         { id: 'bags', name: '手袋' },
@@ -221,6 +246,12 @@ export default {
       ]
     }
   },
+  onLoad() {
+    // 模拟数据加载，500ms后隐藏骨架屏
+    setTimeout(() => {
+      this.isLoading = false
+    }, 500)
+  },
   computed: {
     filteredProducts() {
       let products = this.allProducts
@@ -267,6 +298,12 @@ export default {
     onSearchInput(e) {
       this.searchKeyword = e.detail.value
     },
+    clearSearch() {
+      this.searchKeyword = ''
+    },
+    onImageLoad() {
+      // 图片加载完成，可在此处添加加载计数逻辑
+    },
     onCategoryChange(index) {
       this.activeCategory = index
     },
@@ -304,15 +341,46 @@ export default {
   background: #ffffff;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 
+  .search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
   .search-input {
-    width: 100%;
+    flex: 1;
     height: 72rpx;
     padding: 0 24rpx;
+    padding-right: 60rpx;
     background: #f5f5f5;
     border-radius: 36rpx;
     font-size: 28rpx;
     color: #333333;
     border: none;
+    transition: all 0.2s ease;
+
+    &:focus {
+      background: #f0f0f0;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  .clear-btn {
+    position: absolute;
+    right: 20rpx;
+    width: 40rpx;
+    height: 40rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32rpx;
+    color: #999999;
+    transition: all 0.2s ease;
+
+    &:active {
+      color: #333333;
+      transform: scale(0.8);
+    }
   }
 }
 
@@ -401,10 +469,12 @@ export default {
     border-radius: 8rpx;
     overflow: hidden;
     cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     &:active {
-      transform: scale(0.98);
+      box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.12);
+      transform: translateY(-2rpx);
     }
 
     .product-image-wrapper {
@@ -460,6 +530,71 @@ export default {
         font-weight: 600;
       }
     }
+  }
+}
+
+/* 骨架屏加载动画 */
+.skeleton-item {
+  pointer-events: none;
+
+  .skeleton-image {
+    width: 100%;
+    height: 340rpx;
+    background: linear-gradient(
+      90deg,
+      #f0f0f0 0%,
+      #f8f8f8 50%,
+      #f0f0f0 100%
+    );
+    background-size: 200% 100%;
+    animation: skeletonLoading 1.5s infinite;
+    border-radius: 8rpx;
+  }
+
+  .skeleton-text {
+    height: 16rpx;
+    background: linear-gradient(
+      90deg,
+      #f0f0f0 0%,
+      #f8f8f8 50%,
+      #f0f0f0 100%
+    );
+    background-size: 200% 100%;
+    animation: skeletonLoading 1.5s infinite;
+    border-radius: 4rpx;
+    margin-bottom: 12rpx;
+
+    &.skeleton-title {
+      width: 90%;
+      height: 24rpx;
+    }
+
+    &.skeleton-category {
+      width: 60%;
+      height: 16rpx;
+    }
+
+    &.skeleton-price {
+      width: 50%;
+      height: 20rpx;
+    }
+  }
+
+  .product-info {
+    padding: 24rpx;
+
+    .skeleton-text:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+@keyframes skeletonLoading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
   }
 }
 

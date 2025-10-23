@@ -31,10 +31,29 @@
         "navigationBarTitleText": "我的"
       }
     },
-    {
+  {
       "path": "pages/video-player/video-player",
       "style": {
         "navigationBarTitleText": "视频播放",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/membership/join",
+      "style": {
+        "navigationBarTitleText": "完善个人资料"
+      }
+    },
+    {
+      "path": "pages/collection/explore",
+      "style": {
+        "navigationBarTitleText": "精选系列"
+      }
+    },
+    {
+      "path": "pages/orders/orders",
+      "style": {
+        "navigationBarTitleText": "我的订单",
         "navigationStyle": "custom"
       }
     }
@@ -43,7 +62,10 @@
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "Ruizhu",
     "navigationBarBackgroundColor": "#FFFFFF",
-    "backgroundColor": "#FFFFFF"
+    "backgroundColor": "#FFFFFF",
+    "pageOrientation": "portrait",
+    "animationType": "pop-in",
+    "animationDuration": 300
   },
   "tabBar": {
     "color": "#999999",

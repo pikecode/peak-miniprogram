@@ -156,6 +156,24 @@ export default {
   onLoad() {
     console.log('购物袋页面加载完成')
   },
+  onShow() {
+    // 合并待加入的商品（来自其他页面的“即刻购买”）
+    try {
+      const pending = uni.getStorageSync('pendingCartItems') || []
+      if (Array.isArray(pending) && pending.length) {
+        pending.forEach((p) => {
+          const idx = this.cartItems.findIndex((x) => x.id === p.id)
+          if (idx >= 0) {
+            this.cartItems[idx].quantity += p.quantity || 1
+          } else {
+            this.cartItems.push(p)
+          }
+        })
+        uni.removeStorageSync('pendingCartItems')
+        this.$forceUpdate()
+      }
+    } catch (e) {}
+  },
   methods: {
     increaseQuantity(index) {
       this.cartItems[index].quantity++

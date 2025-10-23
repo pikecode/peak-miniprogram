@@ -1,99 +1,106 @@
 <template>
-  <view class="page">
-    <!-- 用户信息卡片 -->
-    <view class="user-card">
-      <view class="card-background"></view>
-      <view class="user-info">
-        <view class="avatar-section">
-          <image class="user-avatar" :src="userInfo.avatar"></image>
-        </view>
-        <view class="info-section">
-          <text class="user-name">{{ userInfo.name }}</text>
-          <text class="user-id">ID: {{ userInfo.id }}</text>
-          <view class="member-badge">
-            <text class="badge-text">{{ userInfo.memberLevel }}</text>
+  <view class="profile-page">
+    <!-- 顶部轮播图 -->
+    <swiper class="profile-swiper" indicator-dots circular>
+      <swiper-item v-for="(banner, index) in banners" :key="index" class="swiper-item">
+        <view class="swiper-content">
+          <image :src="banner.image" class="banner-image" mode="aspectFill"></image>
+          <view class="banner-text-overlay">
+            <text class="banner-brand">PRADA</text>
+            <view class="banner-welcome">
+              <text class="welcome-title">欢迎</text>
+              <text class="welcome-desc">{{ userGreeting }}先生，您好</text>
+            </view>
           </view>
         </view>
-      </view>
-    </view>
+      </swiper-item>
+    </swiper>
 
-    <!-- 统计卡片 -->
-    <view class="stats-section">
-      <view class="stat-card">
-        <text class="stat-number">{{ userStats.orders }}</text>
-        <text class="stat-label">订单</text>
+    <!-- 我的订单 -->
+    <view class="orders-card">
+      <view class="orders-header" @tap="goToOrders('all')">
+        <text class="orders-title">我的订单</text>
+        <text class="orders-arrow">→</text>
       </view>
-      <view class="stat-card">
-        <text class="stat-number">{{ userStats.points }}</text>
-        <text class="stat-label">积分</text>
-      </view>
-      <view class="stat-card">
-        <text class="stat-number">{{ userStats.coupons }}</text>
-        <text class="stat-label">优惠券</text>
-      </view>
-    </view>
-
-    <!-- 菜单项 -->
-    <view class="menu-section">
-      <view class="menu-group">
-        <view class="menu-group-title">我的购物</view>
+      <view class="order-status-grid">
         <view
-          v-for="(item, index) in shoppingMenu"
+          v-for="(status, index) in orderStatuses"
           :key="index"
-          class="menu-item"
-          @tap="onMenuTap(item)"
+          class="order-status-item"
+          @tap="onOrderStatusTap(status)"
         >
-          <view class="menu-item-left">
-            <text class="menu-icon">{{ item.icon }}</text>
-            <text class="menu-label">{{ item.label }}</text>
+          <view class="status-icon-wrapper">
+            <text class="status-icon">{{ status.icon }}</text>
           </view>
-          <text class="menu-arrow">›</text>
-        </view>
-      </view>
-
-      <view class="menu-group">
-        <view class="menu-group-title">账户</view>
-        <view
-          v-for="(item, index) in accountMenu"
-          :key="index"
-          class="menu-item"
-          @tap="onMenuTap(item)"
-        >
-          <view class="menu-item-left">
-            <text class="menu-icon">{{ item.icon }}</text>
-            <text class="menu-label">{{ item.label }}</text>
-          </view>
-          <text class="menu-arrow">›</text>
-        </view>
-      </view>
-
-      <view class="menu-group">
-        <view class="menu-group-title">其他</view>
-        <view
-          v-for="(item, index) in otherMenu"
-          :key="index"
-          class="menu-item"
-          @tap="onMenuTap(item)"
-        >
-          <view class="menu-item-left">
-            <text class="menu-icon">{{ item.icon }}</text>
-            <text class="menu-label">{{ item.label }}</text>
-          </view>
-          <text class="menu-arrow">›</text>
+          <text class="status-label">{{ status.label }}</text>
         </view>
       </view>
     </view>
 
-    <!-- 登出按钮 -->
-    <view class="logout-section">
-      <view class="logout-btn" @tap="handleLogout">
-        <text>登出</text>
+    <!-- 快速访问 -->
+    <view class="quick-access-section">
+      <view class="quick-access-item" @tap="onQuickAccessTap('wishlist')">
+        <text class="quick-access-icon">❤️</text>
+        <text class="quick-access-label">我的心愿单</text>
+      </view>
+      <view class="quick-access-item" @tap="onQuickAccessTap('addresses')">
+        <text class="quick-access-icon">📍</text>
+        <text class="quick-access-label">我的地址簿</text>
       </view>
     </view>
 
-    <!-- 版本信息 -->
-    <view class="version-info">
-      <text class="version-text">Ruizhu {{ appVersion }}</text>
+    <!-- 法律和授权 -->
+    <view class="legal-access-section">
+      <view class="legal-item" @tap="onLegalTap('terms')">
+        <text class="legal-icon">🛡️</text>
+        <text class="legal-label">法律条款</text>
+      </view>
+      <view class="legal-item" @tap="onLegalTap('privacy')">
+        <text class="legal-icon">👤</text>
+        <text class="legal-label">个人信息授权</text>
+      </view>
+    </view>
+
+    <!-- 二维码区域 -->
+    <view class="qrcode-section">
+      <view class="qrcode-wrapper">
+        <image
+          class="qrcode-image"
+          src="https://via.placeholder.com/180x180?text=WeChat"
+          mode="aspectFit"
+        ></image>
+      </view>
+      <text class="qrcode-text">扫描关注我们</text>
+    </view>
+
+    <!-- 猜你喜欢推荐 -->
+    <view class="recommend-section">
+      <text class="recommend-title">猜你喜欢</text>
+      <view class="recommend-grid">
+        <view
+          v-for="(item, index) in recommendProducts"
+          :key="index"
+          class="recommend-card"
+          @tap="onProductTap(item)"
+        >
+          <view class="recommend-image-wrapper">
+            <image :src="item.image" class="recommend-image" mode="aspectFill"></image>
+            <text class="favorite-btn" @tap.stop="toggleFavorite(index)">{{ item.isFavorite ? '❤️' : '🤍' }}</text>
+            <view class="image-indicators">
+              <text
+                v-for="(dot, dotIndex) in item.imageCount"
+                :key="dotIndex"
+                class="indicator-dot"
+                :class="{ active: dotIndex === 0 }"
+              ></text>
+            </view>
+          </view>
+          <view class="recommend-info">
+            <text class="recommend-product-name">{{ item.name }}</text>
+            <text class="recommend-price">¥{{ item.price }}</text>
+          </view>
+        </view>
+      </view>
     </view>
   </view>
 </template>
@@ -103,87 +110,114 @@ export default {
   data() {
     return {
       appVersion: '1.0.0',
-      userInfo: {
-        name: '李明',
-        id: 'RZ20241017001',
-        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80',
-        memberLevel: 'VIP 金牌会员'
-      },
-      userStats: {
-        orders: 12,
-        points: 2680,
-        coupons: 5
-      },
-      shoppingMenu: [
-        { id: 'orders', label: '我的订单', icon: '📦' },
-        { id: 'favorites', label: '收藏夹', icon: '❤️' },
-        { id: 'reviews', label: '我的评价', icon: '⭐' },
-        { id: 'rewards', label: '积分商城', icon: '🎁' }
+      userGreeting: '张**',
+      banners: [
+        {
+          image: 'https://images.unsplash.com/photo-1611432579699-484f7990f17e?w=500&q=80'
+        },
+        {
+          image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&q=80'
+        },
+        {
+          image: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=500&q=80'
+        }
       ],
-      accountMenu: [
-        { id: 'profile-edit', label: '编辑资料', icon: '👤' },
-        { id: 'addresses', label: '收货地址', icon: '📍' },
-        { id: 'payment', label: '支付方式', icon: '💳' },
-        { id: 'notifications', label: '消息通知', icon: '🔔' }
+      orderStatuses: [
+        { id: 'pending-payment', label: '待支付', icon: '💳' },
+        { id: 'pending-shipment', label: '待发货', icon: '📦' },
+        { id: 'shipped', label: '已发货', icon: '🚚' },
+        { id: 'aftersales', label: '售后', icon: '📋' }
       ],
-      otherMenu: [
-        { id: 'about', label: '关于我们', icon: 'ℹ️' },
-        { id: 'help', label: '帮助与反馈', icon: '💬' },
-        { id: 'service', label: '服务条款', icon: '📋' }
+      recommendProducts: [
+        {
+          id: 1,
+          name: '【粉星同款】Prada Explore 中号Re-Nylon单肩包',
+          price: '17,900',
+          image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=300&q=80',
+          imageCount: 2,
+          isFavorite: false
+        },
+        {
+          id: 2,
+          name: '【特售】Prada Explore中号Nappa牛皮革单肩包',
+          price: '26,400',
+          image: 'https://images.unsplash.com/photo-1596736342875-ff5348bf9908?w=300&q=80',
+          imageCount: 2,
+          isFavorite: false
+        },
+        {
+          id: 3,
+          name: 'Re-Nylon双肩背包',
+          price: '19,500',
+          image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&q=80',
+          imageCount: 2,
+          isFavorite: false
+        },
+        {
+          id: 4,
+          name: '【特售】皮靴中筒靴',
+          price: '8,900',
+          image: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=300&q=80',
+          imageCount: 2,
+          isFavorite: false
+        }
       ]
     }
   },
   onLoad() {
-    console.log('个人中心页面加载完成')
+    console.log('我的页面加载完成')
   },
   methods: {
-    onMenuTap(item) {
-      const messages = {
-        orders: '我的订单',
-        favorites: '收藏夹',
-        reviews: '我的评价',
-        rewards: '积分商城',
-        'profile-edit': '编辑资料',
-        addresses: '收货地址',
-        payment: '支付方式',
-        notifications: '消息通知',
-        about: '关于我们',
-        help: '帮助与反馈',
-        service: '服务条款'
+    onOrderStatusTap(status) {
+      uni.navigateTo({
+        url: `/pages/orders/orders?status=${status.id}`
+      })
+    },
+    goToOrders(type) {
+      uni.navigateTo({
+        url: `/pages/orders/orders?status=${type}`
+      })
+    },
+    onQuickAccessTap(type) {
+      const titles = {
+        wishlist: '我的心愿单',
+        addresses: '我的地址簿'
       }
-
       uni.showToast({
-        title: messages[item.id] || item.label,
+        title: titles[type],
         icon: 'none',
         duration: 1500
       })
-
-      // 可以根据 item.id 导航到相应的页面
-      // 例如：
-      // if (item.id === 'orders') {
-      //   uni.navigateTo({
-      //     url: '/pages/orders/orders'
-      //   })
-      // }
     },
-    handleLogout() {
-      uni.showModal({
-        title: '提示',
-        content: '确定要登出账户吗?',
-        success: (res) => {
-          if (res.confirm) {
-            uni.showToast({
-              title: '已登出',
-              icon: 'none',
-              duration: 1500
-            })
-            // 可以清除本地存储的用户信息
-            // uni.removeStorageSync('userToken')
-            // uni.switchTab({
-            //   url: '/pages/index/index'
-            // })
-          }
-        }
+    onLegalTap(type) {
+      const titles = {
+        terms: '法律条款',
+        privacy: '个人信息授权'
+      }
+      uni.showToast({
+        title: titles[type],
+        icon: 'none',
+        duration: 1500
+      })
+    },
+    onProductTap(item) {
+      uni.showToast({
+        title: item.name,
+        icon: 'none',
+        duration: 1500
+      })
+      // 可以导航到产品详情页
+      // uni.navigateTo({
+      //   url: `/pages/product/detail?id=${item.id}`
+      // })
+    },
+    toggleFavorite(index) {
+      this.recommendProducts[index].isFavorite = !this.recommendProducts[index].isFavorite
+      const status = this.recommendProducts[index].isFavorite ? '已收藏' : '已移除'
+      uni.showToast({
+        title: status,
+        icon: 'none',
+        duration: 1000
       })
     }
   }
@@ -191,226 +225,384 @@ export default {
 </script>
 
 <style lang="scss">
-.page {
+.profile-page {
   min-height: 100vh;
-  background: #f9f9f9;
+  background: #ffffff;
   padding-bottom: 120rpx;
 }
 
-/* 用户信息卡片 */
-.user-card {
+/* 顶部轮播 */
+.profile-swiper {
+  height: 500rpx;
   position: relative;
-  margin: 40rpx 40rpx 0;
-  border-radius: 12rpx;
-  overflow: hidden;
-  background: #ffffff;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
 
-  .card-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 80rpx;
-    background: linear-gradient(135deg, #000000 0%, #333333 100%);
-    z-index: 1;
+  .swiper-item {
+    height: 100%;
   }
 
-  .user-info {
+  .swiper-content {
     position: relative;
-    z-index: 2;
-    padding: 40rpx;
-    display: flex;
-    gap: 32rpx;
-    align-items: flex-start;
+    width: 100%;
+    height: 100%;
 
-    .avatar-section {
-      flex-shrink: 0;
+    .banner-image {
+      width: 100%;
+      height: 100%;
+      display: block;
     }
 
-    .user-avatar {
-      width: 120rpx;
-      height: 120rpx;
-      border-radius: 60rpx;
-      background: #f5f5f5;
-      border: 4rpx solid #ffffff;
-    }
-
-    .info-section {
-      flex: 1;
+    .banner-text-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      margin-top: 20rpx;
+      justify-content: space-between;
+      padding: 32rpx 40rpx;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, transparent 50%, rgba(0, 0, 0, 0.3) 100%);
 
-      .user-name {
+      .banner-brand {
         display: block;
-        font-size: 36rpx;
-        font-weight: 600;
-        color: #000000;
-        margin-bottom: 8rpx;
+        font-size: 56rpx;
+        font-weight: 700;
+        color: #ffffff;
+        letter-spacing: 6rpx;
       }
 
-      .user-id {
-        display: block;
-        font-size: 24rpx;
-        color: #999999;
-        margin-bottom: 16rpx;
-      }
+      .banner-welcome {
+        display: flex;
+        flex-direction: column;
+        gap: 8rpx;
 
-      .member-badge {
-        display: inline-block;
-        padding: 8rpx 16rpx;
-        background: #f9d71c;
-        border-radius: 20rpx;
-        width: fit-content;
+        .welcome-title {
+          display: block;
+          font-size: 32rpx;
+          color: #ffffff;
+          font-weight: 400;
+        }
 
-        .badge-text {
-          font-size: 24rpx;
-          font-weight: 500;
-          color: #333333;
+        .welcome-desc {
+          display: block;
+          font-size: 26rpx;
+          color: #ffffff;
+          font-weight: 400;
+          opacity: 0.9;
         }
       }
     }
   }
 }
 
-/* 统计卡片 */
-.stats-section {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16rpx;
-  padding: 24rpx 40rpx;
+/* 我的订单卡片 */
+.orders-card {
+  margin: 0 40rpx;
+  margin-top: -80rpx;
+  background: #ffffff;
+  border-radius: 8rpx;
+  padding: 32rpx 24rpx;
+  position: relative;
+  z-index: 10;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
 
-  .stat-card {
+  .orders-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32rpx;
+    padding-bottom: 24rpx;
+    border-bottom: 1px solid #f0f0f0;
+
+    .orders-title {
+      display: block;
+      font-size: 32rpx;
+      font-weight: 600;
+      color: #000000;
+    }
+
+    .orders-arrow {
+      display: block;
+      font-size: 32rpx;
+      color: #000000;
+      font-weight: 300;
+    }
+  }
+
+  .order-status-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20rpx;
+
+    .order-status-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12rpx;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:active {
+        transform: scale(0.95);
+      }
+
+      .status-icon-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 64rpx;
+        height: 64rpx;
+        border: 2px solid #e0e0e0;
+        border-radius: 8rpx;
+        background: #ffffff;
+        transition: all 0.3s ease;
+
+        .status-icon {
+          display: block;
+          font-size: 36rpx;
+        }
+      }
+
+      .status-label {
+        display: block;
+        font-size: 22rpx;
+        color: #333333;
+        text-align: center;
+        font-weight: 400;
+      }
+
+      &:active .status-icon-wrapper {
+        border-color: #000000;
+        background: #f9f9f9;
+      }
+    }
+  }
+}
+
+/* 快速访问区域 */
+.quick-access-section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16rpx;
+  padding: 40rpx 40rpx 0;
+  margin-top: 32rpx;
+
+  .quick-access-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 24rpx;
+    padding: 40rpx 24rpx;
     background: #ffffff;
+    border: 1px solid #f0f0f0;
     border-radius: 8rpx;
-    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
-
-    .stat-number {
-      display: block;
-      font-size: 40rpx;
-      font-weight: 700;
-      color: #000000;
-      margin-bottom: 8rpx;
-    }
-
-    .stat-label {
-      display: block;
-      font-size: 24rpx;
-      color: #999999;
-    }
-  }
-}
-
-/* 菜单部分 */
-.menu-section {
-  padding: 24rpx 0;
-  margin-top: 24rpx;
-
-  .menu-group {
-    margin-bottom: 24rpx;
-    background: #ffffff;
-    padding: 24rpx 0;
-
-    .menu-group-title {
-      display: block;
-      padding: 0 40rpx;
-      margin-bottom: 16rpx;
-      font-size: 28rpx;
-      font-weight: 500;
-      color: #666666;
-    }
-
-    .menu-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 20rpx 40rpx;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-      cursor: pointer;
-      transition: background-color 0.2s ease;
-
-      &:last-child {
-        border-bottom: none;
-      }
-
-      &:active {
-        background-color: #f5f5f5;
-      }
-
-      .menu-item-left {
-        display: flex;
-        align-items: center;
-        gap: 16rpx;
-
-        .menu-icon {
-          font-size: 36rpx;
-          display: block;
-          width: 40rpx;
-          text-align: center;
-        }
-
-        .menu-label {
-          display: block;
-          font-size: 28rpx;
-          color: #333333;
-          font-weight: 400;
-        }
-      }
-
-      .menu-arrow {
-        font-size: 32rpx;
-        color: #cccccc;
-      }
-    }
-  }
-}
-
-/* 登出部分 */
-.logout-section {
-  padding: 40rpx;
-  padding-bottom: 80rpx;
-
-  .logout-btn {
-    height: 88rpx;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #ffffff;
-    color: #ff6b6b;
-    border-radius: 8rpx;
-    font-size: 32rpx;
-    font-weight: 600;
-    border: 1px solid #ff6b6b;
     cursor: pointer;
     transition: all 0.3s ease;
 
     &:active {
-      background: #fff5f5;
+      background: #f9f9f9;
+      border-color: #000000;
+      transform: scale(0.98);
     }
 
-    text {
+    .quick-access-icon {
       display: block;
+      font-size: 48rpx;
+      margin-bottom: 16rpx;
+    }
+
+    .quick-access-label {
+      display: block;
+      font-size: 26rpx;
+      color: #333333;
+      font-weight: 400;
+      text-align: center;
     }
   }
 }
 
-/* 版本信息 */
-.version-info {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24rpx;
+/* 法律授权区域 */
+.legal-access-section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16rpx;
+  padding: 0 40rpx;
+  margin-top: 20rpx;
+  margin-bottom: 40rpx;
 
-  .version-text {
-    font-size: 24rpx;
-    color: #cccccc;
+  .legal-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40rpx 24rpx;
+    background: #ffffff;
+    border: 1px solid #f0f0f0;
+    border-radius: 8rpx;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:active {
+      background: #f9f9f9;
+      border-color: #000000;
+      transform: scale(0.98);
+    }
+
+    .legal-icon {
+      display: block;
+      font-size: 48rpx;
+      margin-bottom: 16rpx;
+    }
+
+    .legal-label {
+      display: block;
+      font-size: 26rpx;
+      color: #333333;
+      font-weight: 400;
+      text-align: center;
+    }
+  }
+}
+
+/* 二维码区域 */
+.qrcode-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60rpx 40rpx;
+  background: #f9f9f9;
+  margin: 40rpx 0 0;
+
+  .qrcode-wrapper {
+    margin-bottom: 32rpx;
+
+    .qrcode-image {
+      width: 240rpx;
+      height: 240rpx;
+      background: #ffffff;
+      border-radius: 8rpx;
+      display: block;
+      box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+    }
+  }
+
+  .qrcode-text {
+    display: block;
+    font-size: 28rpx;
+    color: #333333;
+    font-weight: 500;
+    text-align: center;
+  }
+}
+
+/* 猜你喜欢推荐 */
+.recommend-section {
+  padding: 40rpx;
+  background: #ffffff;
+
+  .recommend-title {
+    display: block;
+    font-size: 32rpx;
+    font-weight: 600;
+    color: #000000;
+    margin-bottom: 32rpx;
+  }
+
+  .recommend-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24rpx;
+
+    .recommend-card {
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:active {
+        transform: scale(0.98);
+      }
+
+      .recommend-image-wrapper {
+        position: relative;
+        width: 100%;
+        height: 320rpx;
+        background: #f5f5f5;
+        border-radius: 8rpx;
+        overflow: hidden;
+        margin-bottom: 16rpx;
+
+        .recommend-image {
+          width: 100%;
+          height: 100%;
+          display: block;
+        }
+
+        .favorite-btn {
+          position: absolute;
+          top: 12rpx;
+          right: 12rpx;
+          font-size: 32rpx;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          z-index: 5;
+
+          &:active {
+            transform: scale(1.1);
+          }
+        }
+
+        .image-indicators {
+          position: absolute;
+          bottom: 12rpx;
+          left: 50%;
+          transform: translateX(-50%);
+          display: flex;
+          gap: 6rpx;
+
+          .indicator-dot {
+            display: block;
+            width: 8rpx;
+            height: 8rpx;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+
+            &.active {
+              background: #ffffff;
+              width: 24rpx;
+              border-radius: 4rpx;
+            }
+          }
+        }
+      }
+
+      .recommend-info {
+        display: flex;
+        flex-direction: column;
+        gap: 8rpx;
+
+        .recommend-product-name {
+          display: block;
+          font-size: 24rpx;
+          color: #333333;
+          font-weight: 400;
+          line-height: 1.4;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+        }
+
+        .recommend-price {
+          display: block;
+          font-size: 28rpx;
+          color: #000000;
+          font-weight: 600;
+        }
+      }
+    }
   }
 }
 </style>

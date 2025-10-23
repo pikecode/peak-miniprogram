@@ -122,41 +122,6 @@
       </view>
     </view>
 
-    <!-- 会员特权区域 -->
-    <view class="member-privilege-section">
-      <text class="section-title">会员特权</text>
-      <view class="grid-container" style="grid-template-columns: repeat(2, 1fr)">
-        <view
-          v-for="(item, index) in memberCards"
-          :key="index"
-          class="member-card"
-          @tap="onCardTap(item)"
-        >
-          <image class="item-image" :src="item.image" mode="aspectFill"></image>
-          <text class="card-label">{{ item.label }}</text>
-        </view>
-      </view>
-    </view>
-
-    <!-- 精选推荐区域 -->
-    <view class="featured-section">
-      <text class="section-title">精选推荐</text>
-      <view class="grid-container" style="grid-template-columns: repeat(2, 1fr)">
-        <view
-          v-for="(item, index) in products"
-          :key="index"
-          class="product-card"
-          @tap="onProductTap(item)"
-        >
-          <image class="item-image" :src="item.image" mode="aspectFill"></image>
-          <view class="product-info">
-            <text class="product-name">{{ item.name }}</text>
-            <text class="product-price">¥{{ item.price }}</text>
-          </view>
-        </view>
-      </view>
-    </view>
-
     <!-- 推荐商品区域（3列） -->
     <GridSection
       title="推荐商品"
@@ -215,38 +180,6 @@ export default {
           title: '经典系列',
           subtitle: '永恒之选',
           image: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800&q=80'
-        }
-      ],
-      memberCards: [
-        {
-          label: '会员专享',
-          image: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=400&q=80'
-        },
-        {
-          label: '积分商城',
-          image: 'https://images.unsplash.com/photo-1607082349566-187342175e2f?w=400&q=80'
-        }
-      ],
-      products: [
-        {
-          name: '经典手袋',
-          price: '12800',
-          image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&q=80'
-        },
-        {
-          name: '时尚背包',
-          price: '8600',
-          image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&q=80'
-        },
-        {
-          name: '优雅钱包',
-          price: '3200',
-          image: 'https://images.unsplash.com/photo-1627123424574-724758594e93?w=400&q=80'
-        },
-        {
-          name: '商务公文包',
-          price: '15800',
-          image: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=400&q=80'
         }
       ],
 
@@ -354,12 +287,6 @@ export default {
 
     onSwiperChange(e) {
       this.currentBannerIndex = e.detail.current
-    },
-    onCardTap(card) {
-      uni.showToast({
-        title: card.label,
-        icon: 'none'
-      })
     },
     onProductTap(product) {
       uni.showToast({
@@ -665,130 +592,6 @@ export default {
   /* 视频项特殊样式 */
   .video-item {
     background: #000000;
-  }
-}
-
-/* 会员特权区域 */
-.member-privilege-section {
-  padding: 60rpx 40rpx;
-
-  .section-title {
-    display: block;
-    font-size: 48rpx;
-    font-weight: 500;
-    color: #000000;
-    margin-bottom: 30rpx;
-    letter-spacing: 2rpx;
-  }
-
-  .grid-container {
-    display: grid;
-    gap: 20rpx;
-  }
-
-  .member-card {
-    position: relative;
-    overflow: hidden;
-    border-radius: 8rpx;
-    aspect-ratio: 1;
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-
-    &:active {
-      transform: scale(0.98);
-    }
-
-    .item-image {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-
-    .card-label {
-      position: absolute;
-      bottom: 16rpx;
-      left: 16rpx;
-      right: 16rpx;
-      font-size: 28rpx;
-      font-weight: 600;
-      color: #ffffff;
-      text-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.3);
-      z-index: 2;
-    }
-
-    &::before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 60%;
-      background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-      z-index: 1;
-    }
-  }
-}
-
-/* 精选推荐区域 */
-.featured-section {
-  padding: 60rpx 40rpx;
-  background: #ffffff;
-
-  .section-title {
-    display: block;
-    font-size: 48rpx;
-    font-weight: 500;
-    color: #000000;
-    margin-bottom: 30rpx;
-    letter-spacing: 2rpx;
-  }
-
-  .grid-container {
-    display: grid;
-    gap: 20rpx;
-  }
-
-  .product-card {
-    border-radius: 8rpx;
-    overflow: hidden;
-    background: #ffffff;
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.08);
-
-    &:active {
-      transform: scale(0.98);
-      box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.12);
-    }
-
-    .item-image {
-      width: 100%;
-      height: 280rpx;
-      display: block;
-    }
-
-    .product-info {
-      padding: 16rpx;
-      display: flex;
-      flex-direction: column;
-      gap: 8rpx;
-    }
-
-    .product-name {
-      display: block;
-      font-size: 26rpx;
-      color: #333333;
-      font-weight: 500;
-      line-height: 1.4;
-      word-break: break-word;
-    }
-
-    .product-price {
-      display: block;
-      font-size: 28rpx;
-      color: #000000;
-      font-weight: 600;
-    }
   }
 }
 

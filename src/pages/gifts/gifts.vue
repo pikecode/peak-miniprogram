@@ -1,5 +1,47 @@
 <template>
   <view class="page">
+    <!-- 自定义顶部导航栏 -->
+    <view class="custom-navbar">
+      <view class="navbar-content">
+        <text class="brand-logo">RUIZHU</text>
+      </view>
+    </view>
+
+    <!-- 轮播图区域（包含动画和其他banner） -->
+    <view class="banner-section">
+      <swiper
+        class="banner-swiper"
+        :indicator-dots="true"
+        :indicator-color="indicatorColor"
+        :indicator-active-color="indicatorActiveColor"
+        :autoplay="true"
+        :interval="5000"
+        :circular="true"
+        @change="onBannerChange"
+      >
+        <!-- 第一个轮播项：WebP 动画 -->
+        <swiper-item>
+          <view class="banner-item video-item">
+            <image class="banner-image" src="/static/animation.webp" mode="aspectFill"></image>
+          </view>
+        </swiper-item>
+
+        <!-- 其他轮播项 -->
+        <swiper-item v-for="(item, index) in bannerList" :key="index">
+          <view class="banner-item">
+            <image class="banner-image" :src="item.image" mode="aspectFill"></image>
+            <view class="banner-overlay">
+              <text class="banner-title">{{ item.title }}</text>
+              <view class="banner-subtitle">
+                <text class="subtitle-text">{{ item.subtitle }}</text>
+                <view class="subtitle-line"></view>
+              </view>
+            </view>
+          </view>
+        </swiper-item>
+      </swiper>
+    </view>
+
     <!-- 页面标题 -->
     <view class="page-header">
       <text class="main-title">VIP私人定制</text>
@@ -116,6 +158,29 @@
 export default {
   data() {
     return {
+      // Banner 相关
+      indicatorColor: 'rgba(255, 255, 255, 0.5)',
+      indicatorActiveColor: '#ffffff',
+      currentBannerIndex: 0,
+      bannerList: [
+        {
+          title: 'VIP定制系列',
+          subtitle: '尊贵定制',
+          image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80'
+        },
+        {
+          title: '私人定制',
+          subtitle: '专属服务',
+          image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&q=80'
+        },
+        {
+          title: '尊享礼遇',
+          subtitle: '至尊体验',
+          image: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800&q=80'
+        }
+      ],
+
+      // 产品相关
       activeTab: 'women',
       currentSlide: 0,
       productSlides: [
@@ -198,6 +263,9 @@ export default {
     }
   },
   methods: {
+    onBannerChange(e) {
+      this.currentBannerIndex = e.detail.current
+    },
     switchTab(tab) {
       this.activeTab = tab
       // 这里可以加载不同的产品数据
@@ -235,9 +303,111 @@ export default {
   padding-bottom: 120rpx;
 }
 
+/* 自定义导航栏 */
+.custom-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: #ffffff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1rpx 3rpx rgba(0, 0, 0, 0.06);
+  padding-top: constant(safe-area-inset-top);
+  padding-top: env(safe-area-inset-top);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  .navbar-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20rpx 40rpx;
+    height: 88rpx;
+  }
+
+  .brand-logo {
+    font-size: 48rpx;
+    font-weight: 700;
+    letter-spacing: 4rpx;
+    color: #000000;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    transition: all 0.2s ease;
+    flex: 1;
+  }
+}
+
+/* 轮播图区域 */
+.banner-section {
+  margin-top: calc(88rpx + constant(safe-area-inset-top));
+  margin-top: calc(88rpx + env(safe-area-inset-top));
+  width: 100%;
+  height: 920rpx;
+
+  .banner-swiper {
+    width: 100%;
+    height: 100%;
+  }
+
+  .banner-item {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .banner-image {
+    width: 100%;
+    height: 100%;
+  }
+
+  .banner-overlay {
+    position: absolute;
+    bottom: 100rpx;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 2;
+  }
+
+  .banner-title {
+    font-size: 64rpx;
+    font-weight: 500;
+    color: #ffffff;
+    letter-spacing: 2rpx;
+    margin-bottom: 20rpx;
+    text-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.3);
+  }
+
+  .banner-subtitle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .subtitle-text {
+      font-size: 28rpx;
+      color: #ffffff;
+      letter-spacing: 1rpx;
+      margin-bottom: 12rpx;
+    }
+
+    .subtitle-line {
+      width: 120rpx;
+      height: 2rpx;
+      background: #ffffff;
+    }
+  }
+
+  /* 视频项特殊样式 */
+  .video-item {
+    background: #000000;
+  }
+}
+
 /* 页面标题 */
 .page-header {
-  padding: 80rpx 0 60rpx;
+  padding: 40rpx 0 60rpx;
   text-align: center;
 
   .main-title {

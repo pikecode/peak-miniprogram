@@ -165,6 +165,22 @@
       :columns="3"
       @item-tap="onProductTap"
     />
+
+    <!-- 底部备案信息区域 -->
+    <view class="footer-info-section">
+      <view class="info-row">
+        <image class="info-icon" src="/static/images/icp-icon.png" mode="aspectFit"></image>
+        <text class="info-text">沪ICP备16020595号</text>
+      </view>
+      <view class="info-row">
+        <image class="info-icon" src="/static/images/safe-icon.png" mode="aspectFit"></image>
+        <text class="info-text">沪公网安备 31010602002295号</text>
+      </view>
+      <view class="info-row">
+        <image class="info-icon" src="/static/images/license-icon.png" mode="aspectFit"></image>
+        <text class="info-text">电子营业执照</text>
+      </view>
+    </view>
   </view>
 </template>
 
@@ -772,6 +788,35 @@ export default {
       font-size: 28rpx;
       color: #000000;
       font-weight: 600;
+    }
+  }
+}
+
+/* 底部备案信息区域 */
+.footer-info-section {
+  padding: 60rpx 40rpx;
+  background: #f9f9f9;
+  border-top: 1px solid #eaeaea;
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+
+  .info-row {
+    display: flex;
+    align-items: center;
+    gap: 12rpx;
+    justify-content: center;
+
+    .info-icon {
+      width: 28rpx;
+      height: 28rpx;
+      flex-shrink: 0;
+    }
+
+    .info-text {
+      font-size: 24rpx;
+      color: #666666;
+      text-align: center;
     }
   }
 }

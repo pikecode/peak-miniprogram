@@ -24,7 +24,7 @@
           <view class="banner-item video-item">
             <image
               class="banner-image"
-              src="/static/animation.webp"
+              src="https://ompeak.com/banner-animation.webp"
               mode="aspectFill"
               :webp="true"
             ></image>

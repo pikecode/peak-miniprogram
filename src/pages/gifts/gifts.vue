@@ -121,7 +121,7 @@ export default {
       productSlides: [
         {
           featured: {
-            name: '鞋子1',
+            name: '鞋子',
             price: '1799',
             image: '/static/images/product/鞋子1.jpg'
           },
@@ -140,7 +140,7 @@ export default {
         },
         {
           featured: {
-            name: '服饰2',
+            name: '服装',
             price: '2800',
             image: '/static/images/product/服饰2.jpg'
           },
@@ -159,7 +159,7 @@ export default {
         },
         {
           featured: {
-            name: '服饰1',
+            name: '服装',
             price: '3500',
             image: '/static/images/product/服饰1.jpg'
           },
@@ -177,7 +177,6 @@ export default {
           ]
         }
       ],
-      categories: [],
       jewelryImages: [
         '/static/images/product/饰品184152.jpg',
         '/static/images/product/饰品184157.jpg',
@@ -187,10 +186,28 @@ export default {
         '/static/images/product/饰品184212.jpg',
         '/static/images/product/饰品184216.jpg',
         '/static/images/product/饰品184219.jpg'
+      ],
+      categories: [
+        {
+          name: '高级配饰',
+          image: '/static/images/product/饰品184152.jpg'
+        },
+        {
+          name: '高级配饰',
+          image: '/static/images/product/饰品184157.jpg'
+        },
+        {
+          name: '高级配饰',
+          image: '/static/images/product/饰品184201.jpg'
+        },
+        {
+          name: '高级配饰',
+          image: '/static/images/product/饰品184205.jpg'
+        }
       ]
     }
   },
-  onLoad() {
+  mounted() {
     this.generateCategories()
   },
   methods: {

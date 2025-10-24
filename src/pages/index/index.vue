@@ -22,7 +22,7 @@
         <!-- 第一个轮播项：WebP 动画 -->
         <swiper-item>
           <view class="banner-item video-item">
-            <image class="banner-image" src="/static/animation.webp" mode="aspectFill"></image>
+            <image class="banner-image" src="https://ompeak.com/banner-animation.webp" mode="aspectFill"></image>
           </view>
         </swiper-item>
 
@@ -305,60 +305,6 @@ export default {
   padding-bottom: 120rpx;
 }
 
-/* 自定义导航栏 */
-.custom-navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  background: #ffffff;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 1rpx 3rpx rgba(0, 0, 0, 0.06);
-  padding-top: constant(safe-area-inset-top);
-  padding-top: env(safe-area-inset-top);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-
-  .navbar-content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20rpx 40rpx;
-    height: 88rpx;
-  }
-
-  .brand-logo {
-    font-size: 48rpx;
-    font-weight: 700;
-    letter-spacing: 4rpx;
-    color: #000000;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    transition: all 0.2s ease;
-    flex: 1;
-  }
-
-  .navbar-actions {
-    display: flex;
-    align-items: center;
-    gap: 32rpx;
-    flex-shrink: 0;
-
-    text {
-      font-size: 44rpx;
-      color: #000000;
-      font-weight: 300;
-      transition: all 0.2s ease;
-      cursor: pointer;
-
-      &:active {
-        color: #666666;
-        transform: scale(0.9);
-      }
-    }
-  }
-}
-
 /* 会员礼遇（参考视觉模块） */
 .benefits-section {
   padding: 60rpx 40rpx 0;
@@ -527,10 +473,41 @@ export default {
   }
 }
 
+/* 自定义导航栏 */
+.custom-navbar {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: #ffffff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1rpx 3rpx rgba(0, 0, 0, 0.06);
+  padding-top: constant(safe-area-inset-top);
+  padding-top: env(safe-area-inset-top);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  .navbar-content {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding: 20rpx 40rpx 20rpx 40rpx;
+    height: 140rpx;
+  }
+
+  .brand-logo {
+    font-size: 48rpx;
+    font-weight: 700;
+    letter-spacing: 4rpx;
+    color: #000000;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    transition: all 0.2s ease;
+  }
+}
+
 /* 轮播图区域 */
 .banner-section {
-  margin-top: calc(88rpx + constant(safe-area-inset-top));
-  margin-top: calc(88rpx + env(safe-area-inset-top));
   width: 100%;
   height: 920rpx;
 

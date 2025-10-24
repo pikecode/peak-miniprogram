@@ -22,7 +22,7 @@
         <!-- 第一个轮播项：WebP 动画 -->
         <swiper-item>
           <view class="banner-item video-item">
-            <image class="banner-image" src="/static/animation.webp" mode="aspectFill"></image>
+            <image class="banner-image" src="https://ompeak.com/banner-animation.webp" mode="aspectFill"></image>
           </view>
         </swiper-item>
 

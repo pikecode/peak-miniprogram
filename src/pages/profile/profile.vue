@@ -1,20 +1,32 @@
 <template>
   <view class="profile-page">
-    <!-- 顶部轮播图 -->
-    <swiper class="profile-swiper" indicator-dots circular>
-      <swiper-item v-for="(banner, index) in banners" :key="index" class="swiper-item">
-        <view class="swiper-content">
-          <image :src="banner.image" class="banner-image" mode="aspectFill"></image>
-          <view class="banner-text-overlay">
-            <text class="banner-brand">PRADA</text>
-            <view class="banner-welcome">
-              <text class="welcome-title">欢迎</text>
-              <text class="welcome-desc">{{ userGreeting }}先生，您好</text>
+    <!-- 轮播图区域（包含动画和其他banner） -->
+    <view class="banner-section">
+      <swiper
+        class="banner-swiper"
+        :indicator-dots="true"
+        :indicator-color="indicatorColor"
+        :indicator-active-color="indicatorActiveColor"
+        :autoplay="true"
+        :interval="5000"
+        :circular="true"
+        @change="onSwiperChange"
+      >
+        <!-- 轮播项 -->
+        <swiper-item v-for="(banner, index) in banners" :key="index">
+          <view class="banner-item">
+            <image :src="banner.image" class="banner-image" mode="aspectFill"></image>
+            <view class="banner-text-overlay">
+              <text class="banner-brand">RUIZHU</text>
+              <view class="banner-welcome">
+                <text class="welcome-title">欢迎</text>
+                <text class="welcome-desc">{{ userGreeting }}先生，您好</text>
+              </view>
             </view>
           </view>
-        </view>
-      </swiper-item>
-    </swiper>
+        </swiper-item>
+      </swiper>
+    </view>
 
     <!-- 我的订单 -->
     <view class="orders-card">
@@ -61,18 +73,6 @@
       </view>
     </view>
 
-    <!-- 二维码区域 -->
-    <view class="qrcode-section">
-      <view class="qrcode-wrapper">
-        <image
-          class="qrcode-image"
-          src="https://via.placeholder.com/180x180?text=WeChat"
-          mode="aspectFit"
-        ></image>
-      </view>
-      <text class="qrcode-text">扫描关注我们</text>
-    </view>
-
     <!-- 猜你喜欢推荐 -->
     <view class="recommend-section">
       <text class="recommend-title">猜你喜欢</text>
@@ -111,15 +111,18 @@ export default {
     return {
       appVersion: '1.0.0',
       userGreeting: '张**',
+      indicatorColor: 'rgba(255, 255, 255, 0.5)',
+      indicatorActiveColor: '#ffffff',
+      currentBannerIndex: 0,
       banners: [
         {
-          image: 'https://images.unsplash.com/photo-1611432579699-484f7990f17e?w=500&q=80'
+          image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80'
         },
         {
-          image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&q=80'
+          image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80'
         },
         {
-          image: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=500&q=80'
+          image: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=800&q=80'
         }
       ],
       orderStatuses: [
@@ -168,6 +171,9 @@ export default {
     console.log('我的页面加载完成')
   },
   methods: {
+    onSwiperChange(e) {
+      this.currentBannerIndex = e.detail.current
+    },
     onOrderStatusTap(status) {
       uni.navigateTo({
         url: `/pages/orders/orders?status=${status.id}`
@@ -231,65 +237,65 @@ export default {
   padding-bottom: 120rpx;
 }
 
-/* 顶部轮播 */
-.profile-swiper {
-  height: 500rpx;
-  position: relative;
+/* 轮播图区域 */
+.banner-section {
+  width: 100%;
+  height: 920rpx;
 
-  .swiper-item {
+  .banner-swiper {
+    width: 100%;
     height: 100%;
   }
 
-  .swiper-content {
+  .banner-item {
     position: relative;
     width: 100%;
     height: 100%;
+  }
 
-    .banner-image {
-      width: 100%;
-      height: 100%;
+  .banner-image {
+    width: 100%;
+    height: 100%;
+  }
+
+  .banner-text-overlay {
+    position: absolute;
+    bottom: 100rpx;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 2;
+
+    .banner-brand {
       display: block;
+      font-size: 56rpx;
+      font-weight: 500;
+      color: #ffffff;
+      letter-spacing: 2rpx;
+      margin-bottom: 20rpx;
+      text-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.3);
     }
 
-    .banner-text-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+    .banner-welcome {
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      padding: 32rpx 40rpx;
-      background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, transparent 50%, rgba(0, 0, 0, 0.3) 100%);
+      align-items: center;
 
-      .banner-brand {
+      .welcome-title {
         display: block;
-        font-size: 56rpx;
-        font-weight: 700;
+        font-size: 28rpx;
         color: #ffffff;
-        letter-spacing: 6rpx;
+        letter-spacing: 1rpx;
+        margin-bottom: 12rpx;
       }
 
-      .banner-welcome {
-        display: flex;
-        flex-direction: column;
-        gap: 8rpx;
-
-        .welcome-title {
-          display: block;
-          font-size: 32rpx;
-          color: #ffffff;
-          font-weight: 400;
-        }
-
-        .welcome-desc {
-          display: block;
-          font-size: 26rpx;
-          color: #ffffff;
-          font-weight: 400;
-          opacity: 0.9;
-        }
+      .welcome-desc {
+        display: block;
+        font-size: 28rpx;
+        color: #ffffff;
+        letter-spacing: 1rpx;
       }
     }
   }
@@ -299,8 +305,7 @@ export default {
 .orders-card {
   margin: 0 40rpx;
   margin-top: -80rpx;
-  background: #ffffff;
-  border-radius: 8rpx;
+  background: #ffffff; 
   padding: 32rpx 24rpx;
   position: relative;
   z-index: 10;
@@ -352,10 +357,8 @@ export default {
         justify-content: center;
         width: 64rpx;
         height: 64rpx;
-        border: 2px solid #e0e0e0;
-        border-radius: 8rpx;
-        background: #ffffff;
-        transition: all 0.3s ease;
+        
+      
 
         .status-icon {
           display: block;
@@ -461,37 +464,6 @@ export default {
       font-weight: 400;
       text-align: center;
     }
-  }
-}
-
-/* 二维码区域 */
-.qrcode-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 60rpx 40rpx;
-  background: #f9f9f9;
-  margin: 40rpx 0 0;
-
-  .qrcode-wrapper {
-    margin-bottom: 32rpx;
-
-    .qrcode-image {
-      width: 240rpx;
-      height: 240rpx;
-      background: #ffffff;
-      border-radius: 8rpx;
-      display: block;
-      box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
-    }
-  }
-
-  .qrcode-text {
-    display: block;
-    font-size: 28rpx;
-    color: #333333;
-    font-weight: 500;
-    text-align: center;
   }
 }
 

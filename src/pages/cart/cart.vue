@@ -88,6 +88,14 @@
           <text>结算</text>
         </view>
       </view>
+
+      <!-- 猜你喜欢推荐 -->
+      <RecommendSection
+        :items="recommendProducts"
+        :columns="2"
+        @product-tap="onProductTap"
+        @favorite-change="onFavoriteChange"
+      />
     </view>
 
     <!-- 空购物车状态 -->
@@ -108,7 +116,12 @@
 </template>
 
 <script>
+import RecommendSection from '../../components/RecommendSection.vue'
+
 export default {
+  components: {
+    RecommendSection
+  },
   data() {
     return {
       expressPrice: 0,
@@ -137,6 +150,40 @@ export default {
           price: '3200',
           image: 'https://images.unsplash.com/photo-1627123424574-724758594e93?w=400&q=80',
           quantity: 1
+        }
+      ],
+      recommendProducts: [
+        {
+          id: 1,
+          name: '【明星同款】Prada Explore 中号Re-Nylon单肩包',
+          price: '17,900',
+          image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&q=80',
+          imageCount: 2,
+          isFavorite: false
+        },
+        {
+          id: 2,
+          name: '【预售】Prada Explore中号Nappa牛皮革单肩包',
+          price: '26,400',
+          image: 'https://images.unsplash.com/photo-1596736342875-ff5348bf9908?w=400&q=80',
+          imageCount: 2,
+          isFavorite: false
+        },
+        {
+          id: 3,
+          name: 'Re-Nylon双肩背包',
+          price: '21,800',
+          image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&q=80',
+          imageCount: 2,
+          isFavorite: false
+        },
+        {
+          id: 4,
+          name: '【预售】皮革中筒靴',
+          price: '15,200',
+          image: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=400&q=80',
+          imageCount: 2,
+          isFavorite: false
         }
       ]
     }
@@ -217,6 +264,25 @@ export default {
       // uni.navigateTo({
       //   url: '/pages/checkout/checkout'
       // })
+    },
+    onProductTap(item) {
+      uni.showToast({
+        title: item.name,
+        icon: 'none',
+        duration: 1500
+      })
+      // 可以导航到产品详情页
+      // uni.navigateTo({
+      //   url: `/pages/product/detail?id=${item.id}`
+      // })
+    },
+    onFavoriteChange({ index, isFavorite }) {
+      const status = isFavorite ? '已收藏' : '已移除'
+      uni.showToast({
+        title: status,
+        icon: 'none',
+        duration: 1000
+      })
     }
   }
 }

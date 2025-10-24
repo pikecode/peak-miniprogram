@@ -87,6 +87,12 @@
       "style": {
         "navigationBarTitleText": "个人信息授权"
       }
+    },
+    {
+      "path": "pages/profile/edit",
+      "style": {
+        "navigationBarTitleText": "完善个人资料"
+      }
     }
   ],
   "globalStyle": {

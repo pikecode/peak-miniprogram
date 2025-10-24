@@ -89,18 +89,28 @@
     </view>
 
     <!-- 空购物车状态 -->
-    <view v-else class="empty-cart">
-      <view class="empty-illustration">
-        <text class="empty-icon">🛍️</text>
+    <view v-else class="cart-content">
+      <view class="empty-cart-inner">
+        <view class="empty-illustration">
+          <text class="empty-icon">🛍️</text>
+        </view>
+        <text class="empty-title">购物袋为空</text>
+        <text class="empty-description">快去选择您喜爱的商品吧</text>
+        <view
+          class="empty-action-btn"
+          @tap="continueShopping"
+        >
+          <text>继续购物</text>
+        </view>
       </view>
-      <text class="empty-title">购物袋为空</text>
-      <text class="empty-description">快去选择您喜爱的商品吧</text>
-      <view
-        class="empty-action-btn"
-        @tap="continueShopping"
-      >
-        <text>继续购物</text>
-      </view>
+
+      <!-- 猜你喜欢推荐 -->
+      <RecommendSection
+        :items="recommendProducts"
+        :columns="2"
+        @product-tap="onProductTap"
+        @favorite-change="onFavoriteChange"
+      />
     </view>
   </view>
 </template>
@@ -575,13 +585,13 @@ export default {
   }
 }
 
-/* 空购物车状态 */
-.empty-cart {
+/* 空购物车内容 */
+.empty-cart-inner {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  min-height: 50vh;
   padding: 40rpx;
 
   .empty-illustration {

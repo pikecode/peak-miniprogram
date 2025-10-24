@@ -214,15 +214,9 @@ export default {
       })
     },
     onEditProfile() {
-      uni.showToast({
-        title: '编辑个人信息',
-        icon: 'none',
-        duration: 1000
+      uni.navigateTo({
+        url: '/pages/profile/edit'
       })
-      // 可以导航到编辑个人信息页面
-      // uni.navigateTo({
-      //   url: '/pages/profile/edit'
-      // })
     },
     onToggleVisibility() {
       this.showGreeting = !this.showGreeting

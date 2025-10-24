@@ -185,15 +185,17 @@ export default {
       })
     },
     onQuickAccessTap(type) {
-      const titles = {
-        wishlist: '我的心愿单',
-        addresses: '我的地址簿'
+      if (type === 'wishlist') {
+        uni.navigateTo({
+          url: '/pages/wishlist/wishlist'
+        })
+      } else if (type === 'addresses') {
+        uni.showToast({
+          title: '我的地址簿',
+          icon: 'none',
+          duration: 1500
+        })
       }
-      uni.showToast({
-        title: titles[type],
-        icon: 'none',
-        duration: 1500
-      })
     },
     onLegalTap(type) {
       const titles = {

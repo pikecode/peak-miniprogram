@@ -56,6 +56,12 @@
       "style": {
         "navigationBarTitleText": "我的订单"
       }
+    },
+    {
+      "path": "pages/wishlist/wishlist",
+      "style": {
+        "navigationBarTitleText": "心愿单"
+      }
     }
   ],
   "globalStyle": {

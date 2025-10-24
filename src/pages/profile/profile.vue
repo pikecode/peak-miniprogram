@@ -20,7 +20,11 @@
               <text class="banner-brand">RUIZHU</text>
               <view class="banner-welcome">
                 <text class="welcome-title">欢迎</text>
-                <text class="welcome-desc">{{ userGreeting }}先生，您好</text>
+                <view class="welcome-desc-row">
+                  <text class="welcome-desc">{{ userGreeting }}先生，您好</text>
+                  <text class="welcome-icon edit-icon" @tap="onEditProfile">✎</text>
+                  <text class="welcome-icon eye-icon" @tap="onToggleVisibility">{{ showGreeting ? '◎' : '◎' }}</text>
+                </view>
               </view>
             </view>
           </view>
@@ -52,11 +56,11 @@
     <!-- 快速访问 -->
     <view class="quick-access-section">
       <view class="quick-access-item" @tap="onQuickAccessTap('wishlist')">
-        <text class="quick-access-icon">❤️</text>
+        <text class="quick-access-icon">♡</text>
         <text class="quick-access-label">我的心愿单</text>
       </view>
       <view class="quick-access-item" @tap="onQuickAccessTap('addresses')">
-        <text class="quick-access-icon">📍</text>
+        <text class="quick-access-icon">◉</text>
         <text class="quick-access-label">我的地址簿</text>
       </view>
     </view>
@@ -64,11 +68,11 @@
     <!-- 法律和授权 -->
     <view class="legal-access-section">
       <view class="legal-item" @tap="onLegalTap('terms')">
-        <text class="legal-icon">🛡️</text>
+        <text class="legal-icon">⊕</text>
         <text class="legal-label">法律条款</text>
       </view>
       <view class="legal-item" @tap="onLegalTap('privacy')">
-        <text class="legal-icon">👤</text>
+        <text class="legal-icon">◊</text>
         <text class="legal-label">个人信息授权</text>
       </view>
     </view>
@@ -85,7 +89,7 @@
         >
           <view class="recommend-image-wrapper">
             <image :src="item.image" class="recommend-image" mode="aspectFill"></image>
-            <text class="favorite-btn" @tap.stop="toggleFavorite(index)">{{ item.isFavorite ? '❤️' : '🤍' }}</text>
+            <text class="favorite-btn" @tap.stop="toggleFavorite(index)">{{ item.isFavorite ? '♥' : '♡' }}</text>
             <view class="image-indicators">
               <text
                 v-for="(dot, dotIndex) in item.imageCount"
@@ -111,6 +115,7 @@ export default {
     return {
       appVersion: '1.0.0',
       userGreeting: '张**',
+      showGreeting: true,
       indicatorColor: 'rgba(255, 255, 255, 0.5)',
       indicatorActiveColor: '#ffffff',
       currentBannerIndex: 0,
@@ -126,10 +131,10 @@ export default {
         }
       ],
       orderStatuses: [
-        { id: 'pending-payment', label: '待支付', icon: '💼' },
-        { id: 'pending-shipment', label: '待发货', icon: '📦' },
-        { id: 'shipped', label: '已发货', icon: '🚚' },
-        { id: 'aftersales', label: '售后', icon: '📋' }
+        { id: 'pending-payment', label: '待支付', icon: '◆' },
+        { id: 'pending-shipment', label: '待发货', icon: '□' },
+        { id: 'shipped', label: '已发货', icon: '▶' },
+        { id: 'aftersales', label: '售后', icon: '⊙' }
       ],
       recommendProducts: [
         {
@@ -225,6 +230,26 @@ export default {
         icon: 'none',
         duration: 1000
       })
+    },
+    onEditProfile() {
+      uni.showToast({
+        title: '编辑个人信息',
+        icon: 'none',
+        duration: 1000
+      })
+      // 可以导航到编辑个人信息页面
+      // uni.navigateTo({
+      //   url: '/pages/profile/edit'
+      // })
+    },
+    onToggleVisibility() {
+      this.showGreeting = !this.showGreeting
+      const message = this.showGreeting ? '已显示' : '已隐藏'
+      uni.showToast({
+        title: message,
+        icon: 'none',
+        duration: 1000
+      })
     }
   }
 }
@@ -291,11 +316,37 @@ export default {
         margin-bottom: 12rpx;
       }
 
-      .welcome-desc {
-        display: block;
-        font-size: 28rpx;
-        color: #ffffff;
-        letter-spacing: 1rpx;
+      .welcome-desc-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12rpx;
+
+        .welcome-desc {
+          display: block;
+          font-size: 28rpx;
+          color: #ffffff;
+          letter-spacing: 1rpx;
+        }
+
+        .welcome-icon {
+          display: block;
+          font-size: 28rpx;
+          cursor: pointer;
+          transition: all 0.2s ease;
+
+          &:active {
+            transform: scale(1.15);
+          }
+
+          &.edit-icon {
+            opacity: 0.9;
+          }
+
+          &.eye-icon {
+            opacity: 0.9;
+          }
+        }
       }
     }
   }

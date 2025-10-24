@@ -23,7 +23,7 @@
         <view class="section-header">
           <view class="checkbox-group" @tap="toggleCheckbox('registration')">
             <view class="checkbox" :class="{ checked: authorizations.registration }">
-              <text v-if="authorizations.registration" class="checkbox-icon">✓</text>
+              <text v-if="authorizations.registration" class="checkbox-icon">✔</text>
             </view>
             <text class="section-title">注册于RUIZHU集团顾客数据库</text>
           </view>
@@ -36,11 +36,11 @@
           <text class="option-label">分析:</text>
           <view class="option-checkboxes">
             <view class="small-checkbox" :class="{ checked: authorizations.analysis }" @tap="toggleCheckbox('analysis')">
-              <text v-if="authorizations.analysis" class="checkbox-icon">✓</text>
+              <text v-if="authorizations.analysis" class="checkbox-icon">✔</text>
             </view>
             <text class="option-text">是</text>
             <view class="small-checkbox" @tap="toggleCheckbox('analysis', false)">
-              <text v-if="!authorizations.analysis" class="checkbox-icon">✓</text>
+              <text v-if="!authorizations.analysis" class="checkbox-icon">✔</text>
             </view>
             <text class="option-text">否</text>
           </view>
@@ -55,7 +55,7 @@
         <view class="section-header">
           <view class="checkbox-group">
             <view class="checkbox" :class="{ checked: authorizations.marketing }" @tap="toggleCheckbox('marketing')">
-              <text v-if="authorizations.marketing" class="checkbox-icon">✓</text>
+              <text v-if="authorizations.marketing" class="checkbox-icon">✔</text>
             </view>
             <text class="section-title">营销</text>
           </view>
@@ -70,7 +70,7 @@
         <view class="section-header">
           <view class="checkbox-group" @tap="toggleCheckbox('transfer')">
             <view class="checkbox" :class="{ checked: authorizations.transfer }">
-              <text v-if="authorizations.transfer" class="checkbox-icon">✓</text>
+              <text v-if="authorizations.transfer" class="checkbox-icon">✔</text>
             </view>
             <text class="section-title">个人信息的跨境转移</text>
           </view>

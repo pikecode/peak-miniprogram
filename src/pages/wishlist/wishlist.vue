@@ -13,7 +13,7 @@
           <!-- 产品图片和收藏按钮 -->
           <view class="product-image-wrapper">
             <image :src="item.image" class="product-image" mode="aspectFill"></image>
-            <text class="favorite-btn" @tap.stop="toggleFavorite(index)">❤️</text>
+            <text class="favorite-btn" @tap.stop="toggleFavorite(index)">♥</text>
             <view class="image-indicators">
               <text
                 v-for="(dot, dotIndex) in item.imageCount"

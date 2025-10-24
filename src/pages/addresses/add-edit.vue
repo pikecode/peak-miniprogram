@@ -85,7 +85,7 @@
       <view class="form-checkbox-group">
         <view class="checkbox-item" @tap="form.isDefault = !form.isDefault">
           <view class="checkbox" :class="{ checked: form.isDefault }">
-            <text v-if="form.isDefault" class="checkbox-icon">✓</text>
+            <text v-if="form.isDefault" class="checkbox-icon">✔</text>
           </view>
           <text class="checkbox-label">设置默认地址</text>
         </view>

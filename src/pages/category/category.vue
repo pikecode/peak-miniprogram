@@ -106,10 +106,10 @@ export default {
       isLoading: true,
       categories: [
         { id: 'all', name: '全部' },
-        { id: 'bags', name: '手袋' },
-        { id: 'backpacks', name: '背包' },
-        { id: 'wallets', name: '钱包' },
-        { id: 'accessories', name: '配件' }
+        { id: 'clothing', name: '服装' },
+        { id: 'jewelry', name: '珠宝' },
+        { id: 'shoes', name: '鞋履' },
+        { id: 'perfume', name: '香水' }
       ],
       sortOptions: [
         { label: '推荐', value: 'recommend' },
@@ -119,127 +119,127 @@ export default {
         { label: '价格↑', value: 'price_asc' }
       ],
       allProducts: [
-        // 手袋系列
+        // 服装系列
         {
           id: 1,
-          name: '经典皮质手袋',
-          category: '手袋',
-          categoryId: 'bags',
-          price: '12800',
-          image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&q=80',
+          name: '经典黑色T恤',
+          category: '服装',
+          categoryId: 'clothing',
+          price: '2800',
+          image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&q=80',
           isNew: false,
           isSold: false
         },
         {
           id: 2,
-          name: '优雅肩挎包',
-          category: '手袋',
-          categoryId: 'bags',
-          price: '9800',
-          image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&q=80',
+          name: '优雅连衣裙',
+          category: '服装',
+          categoryId: 'clothing',
+          price: '4800',
+          image: 'https://images.unsplash.com/photo-1595777707802-41d339d60280?w=400&q=80',
           isNew: true,
           isSold: false
         },
         {
           id: 3,
-          name: '简约公文包',
-          category: '手袋',
-          categoryId: 'bags',
-          price: '15600',
-          image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400&q=80',
+          name: '商务夹克',
+          category: '服装',
+          categoryId: 'clothing',
+          price: '5600',
+          image: 'https://images.unsplash.com/photo-1551028719-00167b16ebc5?w=400&q=80',
           isNew: false,
           isSold: false
         },
-        // 背包系列
+        // 珠宝系列
         {
           id: 4,
-          name: '高端旅行背包',
-          category: '背包',
-          categoryId: 'backpacks',
-          price: '8600',
-          image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&q=80',
+          name: '黄金项链',
+          category: '珠宝',
+          categoryId: 'jewelry',
+          price: '18600',
+          image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400&q=80',
           isNew: true,
           isSold: false
         },
         {
           id: 5,
-          name: '商务双肩包',
-          category: '背包',
-          categoryId: 'backpacks',
-          price: '7200',
-          image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&q=80',
+          name: '钻石手镯',
+          category: '珠宝',
+          categoryId: 'jewelry',
+          price: '32000',
+          image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400&q=80',
           isNew: false,
           isSold: false
         },
         {
           id: 6,
-          name: '户外探险背包',
-          category: '背包',
-          categoryId: 'backpacks',
-          price: '6800',
-          image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&q=80',
+          name: '珍珠耳环',
+          category: '珠宝',
+          categoryId: 'jewelry',
+          price: '8800',
+          image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400&q=80',
           isNew: false,
           isSold: false
         },
-        // 钱包系列
+        // 鞋履系列
         {
           id: 7,
-          name: '优雅钱包',
-          category: '钱包',
-          categoryId: 'wallets',
+          name: '高跟鞋',
+          category: '鞋履',
+          categoryId: 'shoes',
           price: '3200',
-          image: 'https://images.unsplash.com/photo-1627123424574-724758594e93?w=400&q=80',
+          image: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=400&q=80',
           isNew: false,
           isSold: false
         },
         {
           id: 8,
-          name: '长款皮夹',
-          category: '钱包',
-          categoryId: 'wallets',
-          price: '4200',
-          image: 'https://images.unsplash.com/photo-1627123424574-724758594e93?w=400&q=80',
+          name: '运动鞋',
+          category: '鞋履',
+          categoryId: 'shoes',
+          price: '1200',
+          image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80',
           isNew: true,
           isSold: false
         },
         {
           id: 9,
-          name: '卡片夹',
-          category: '钱包',
-          categoryId: 'wallets',
-          price: '1800',
-          image: 'https://images.unsplash.com/photo-1627123424574-724758594e93?w=400&q=80',
+          name: '皮革靴子',
+          category: '鞋履',
+          categoryId: 'shoes',
+          price: '2800',
+          image: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=400&q=80',
           isNew: false,
           isSold: false
         },
-        // 配件系列
+        // 香水系列
         {
           id: 10,
-          name: '皮质腰带',
-          category: '配件',
-          categoryId: 'accessories',
-          price: '2800',
-          image: 'https://images.unsplash.com/photo-1624526267942-ab67cb38a25f?w=400&q=80',
+          name: '玫瑰香水',
+          category: '香水',
+          categoryId: 'perfume',
+          price: '1800',
+          image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=400&q=80',
           isNew: false,
           isSold: false
         },
         {
           id: 11,
-          name: '丝巾',
-          category: '配件',
-          categoryId: 'accessories',
-          price: '1200',
-          image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400&q=80',
+          name: '柑橘香氛',
+          category: '香水',
+          categoryId: 'perfume',
+          price: '1500',
+          image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=400&q=80',
           isNew: true,
           isSold: false
         },
         {
           id: 12,
-          name: '钥匙扣',
-          category: '配件',
-          categoryId: 'accessories',
-          price: '680',
-          image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400&q=80',
+          name: '木质香水',
+          category: '香水',
+          categoryId: 'perfume',
+          price: '2200',
+          image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=400&q=80',
           isNew: false,
           isSold: false
         }
@@ -311,15 +311,9 @@ export default {
       this.activeSortIndex = index
     },
     onProductTap(product) {
-      uni.showToast({
-        title: product.name,
-        icon: 'none',
-        duration: 1500
+      uni.navigateTo({
+        url: '/pages/product/detail'
       })
-      // 可以导航到商品详情页
-      // uni.navigateTo({
-      //   url: `/pages/product-detail/product-detail?id=${product.id}`
-      // })
     }
   }
 }

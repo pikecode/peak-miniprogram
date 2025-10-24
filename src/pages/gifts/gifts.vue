@@ -128,29 +128,6 @@
         :class="{ active: slideIndex === currentSlide }"
       ></view>
     </view>
-
-    <!-- 更多分类区域 -->
-    <view class="more-categories">
-      <text class="category-title">定制系列</text>
-
-      <view class="category-grid">
-        <view
-          class="category-item"
-          v-for="(category, index) in categories"
-          :key="index"
-          @tap="onCategoryTap(category)"
-        >
-          <image
-            class="category-image"
-            :src="category.image"
-            mode="aspectFill"
-          ></image>
-          <view class="category-overlay">
-            <text class="category-name">{{ category.name }}</text>
-          </view>
-        </view>
-      </view>
-    </view>
   </view>
 </template>
 
@@ -241,24 +218,6 @@ export default {
             }
           ]
         }
-      ],
-      categories: [
-        {
-          name: '高级配饰',
-          image: '/static/images/product/120251017184219.jpg'
-        },
-        {
-          name: '高级配饰',
-          image: '/static/images/product/120251017184152.jpg'
-        },
-        {
-          name: '定制鞋履',
-          image: '/static/images/product/120251017222234.jpg'
-        },
-        {
-          name: '高级配饰',
-          image: '/static/images/product/120251017184201.jpg'
-        }
       ]
     }
   },
@@ -275,20 +234,13 @@ export default {
       this.currentSlide = e.detail.current
     },
     onProductTap(product) {
-      uni.showToast({
-        title: product.name,
-        icon: 'none'
+      uni.navigateTo({
+        url: '/pages/product/detail'
       })
     },
     onExploreMore() {
       uni.showToast({
         title: '探索更多产品',
-        icon: 'none'
-      })
-    },
-    onCategoryTap(category) {
-      uni.showToast({
-        title: category.name,
         icon: 'none'
       })
     }
@@ -594,66 +546,6 @@ export default {
       background: #000000;
       width: 32rpx;
       border-radius: 8rpx;
-    }
-  }
-}
-
-/* 更多分类区域 */
-.more-categories {
-  padding: 60rpx 40rpx;
-
-  .category-title {
-    display: block;
-    font-size: 48rpx;
-    font-weight: 500;
-    color: #000000;
-    text-align: center;
-    margin-bottom: 60rpx;
-    letter-spacing: 2rpx;
-  }
-
-  .category-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24rpx;
-
-    .category-item {
-      position: relative;
-      height: 340rpx;
-      border-radius: 8rpx;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-
-      .category-image {
-        width: 100%;
-        height: 100%;
-        flex: 1;
-        object-fit: cover;
-      }
-
-      .category-overlay {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        padding: 30rpx;
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3), transparent);
-        min-height: 120rpx;
-        display: flex;
-        align-items: flex-end;
-        z-index: 2;
-
-        .category-name {
-          display: block;
-          font-size: 32rpx;
-          color: #ffffff;
-          font-weight: 500;
-          text-align: center;
-          width: 100%;
-          text-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.5);
-        }
-      }
     }
   }
 }

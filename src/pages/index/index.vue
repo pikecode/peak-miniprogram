@@ -122,6 +122,28 @@
       </view>
     </view>
 
+    <!-- 美妆与香水区域 -->
+    <view class="beauty-section">
+      <text class="section-title">美妆与香水</text>
+      <view class="beauty-grid">
+        <view
+          v-for="(item, index) in beautyProducts"
+          :key="index"
+          class="beauty-item"
+          @tap="onBeautyProductTap(item)"
+        >
+          <view class="beauty-image-wrapper">
+            <image class="beauty-image" :src="item.image" mode="aspectFill"></image>
+          </view>
+          <view class="beauty-info">
+            <text class="beauty-name">{{ item.name }}</text>
+            <text class="beauty-category">{{ item.category }}</text>
+            <text class="beauty-price">¥{{ item.price }}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
     <!-- 推荐商品区域（3列） -->
     <GridSection
       title="推荐商品"
@@ -210,6 +232,27 @@ export default {
           image: '/static/images/product/120251017222234.jpg'
         }
       ],
+      // 美妆与香水
+      beautyProducts: [
+        {
+          name: '虚拟花香水',
+          category: '香水',
+          price: '1,299',
+          image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=400&q=80'
+        },
+        {
+          name: '奢华精油妆前乳',
+          category: '美妆',
+          price: '680',
+          image: 'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&q=80'
+        },
+        {
+          name: '玫瑰精致唇膏',
+          category: '美妆',
+          price: '520',
+          image: 'https://images.unsplash.com/photo-1576871337622-98d48d1cf531?w=400&q=80'
+        }
+      ],
       // 推荐商品（3列）
       recommendProducts: [
         {
@@ -288,10 +331,14 @@ export default {
     onSwiperChange(e) {
       this.currentBannerIndex = e.detail.current
     },
+    onBeautyProductTap(product) {
+      uni.navigateTo({
+        url: '/pages/product/detail'
+      })
+    },
     onProductTap(product) {
-      uni.showToast({
-        title: product.name,
-        icon: 'none'
+      uni.navigateTo({
+        url: '/pages/product/detail'
       })
     }
   }
@@ -569,6 +616,86 @@ export default {
   /* 视频项特殊样式 */
   .video-item {
     background: #000000;
+  }
+}
+
+/* 美妆与香水区域 */
+.beauty-section {
+  padding: 60rpx 40rpx 40rpx;
+  background: #ffffff;
+
+  .section-title {
+    display: block;
+    font-size: 48rpx;
+    font-weight: 500;
+    color: #000000;
+    text-align: center;
+    margin-bottom: 40rpx;
+    letter-spacing: 2rpx;
+  }
+
+  .beauty-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16rpx;
+  }
+
+  .beauty-item {
+    background: #f8f8f8;
+    border-radius: 8rpx;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:active {
+      transform: translateY(-4rpx);
+      box-shadow: 0 8rpx 16rpx rgba(0, 0, 0, 0.08);
+    }
+
+    .beauty-image-wrapper {
+      position: relative;
+      width: 100%;
+      height: 280rpx;
+      background: #f5f5f5;
+      overflow: hidden;
+
+      .beauty-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .beauty-info {
+      padding: 16rpx 12rpx;
+      display: flex;
+      flex-direction: column;
+      gap: 6rpx;
+
+      .beauty-name {
+        display: block;
+        font-size: 24rpx;
+        color: #333333;
+        font-weight: 500;
+        line-height: 1.2;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .beauty-category {
+        display: block;
+        font-size: 20rpx;
+        color: #999999;
+      }
+
+      .beauty-price {
+        display: block;
+        font-size: 26rpx;
+        color: #000000;
+        font-weight: 600;
+      }
+    }
   }
 }
 

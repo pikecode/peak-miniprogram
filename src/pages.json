@@ -93,6 +93,12 @@
       "style": {
         "navigationBarTitleText": "完善个人资料"
       }
+    },
+    {
+      "path": "pages/product/detail",
+      "style": {
+        "navigationBarTitleText": "商品详情"
+      }
     }
   ],
   "globalStyle": {

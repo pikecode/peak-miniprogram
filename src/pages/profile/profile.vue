@@ -126,7 +126,7 @@ export default {
         }
       ],
       orderStatuses: [
-        { id: 'pending-payment', label: '待支付', icon: '💳' },
+        { id: 'pending-payment', label: '待支付', icon: '💼' },
         { id: 'pending-shipment', label: '待发货', icon: '📦' },
         { id: 'shipped', label: '已发货', icon: '🚚' },
         { id: 'aftersales', label: '售后', icon: '📋' }

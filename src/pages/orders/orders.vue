@@ -1,17 +1,6 @@
 <template>
   <view class="orders-page">
-    <!-- 自定义导航栏 -->
-    <view class="custom-navbar">
-      <view class="navbar-left">
-        <text class="back-btn" @tap="goBack">‹</text>
-      </view>
-      <text class="navbar-title">我的订单</text>
-      <view class="navbar-right">
-        <text class="navbar-icon">⋮</text>
-        <text class="navbar-icon">−</text>
-        <text class="navbar-icon">◯</text>
-      </view>
-    </view>
+   
 
     <!-- 标签页 -->
     <view class="tabs-container">

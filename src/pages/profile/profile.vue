@@ -190,23 +190,21 @@ export default {
           url: '/pages/wishlist/wishlist'
         })
       } else if (type === 'addresses') {
-        uni.showToast({
-          title: '我的地址簿',
-          icon: 'none',
-          duration: 1500
+        uni.navigateTo({
+          url: '/pages/addresses/addresses'
         })
       }
     },
     onLegalTap(type) {
-      const titles = {
-        terms: '法律条款',
-        privacy: '个人信息授权'
+      if (type === 'terms') {
+        uni.navigateTo({
+          url: '/pages/legal/legal'
+        })
+      } else if (type === 'privacy') {
+        uni.navigateTo({
+          url: '/pages/legal/authorization'
+        })
       }
-      uni.showToast({
-        title: titles[type],
-        icon: 'none',
-        duration: 1500
-      })
     },
     onProductTap(item) {
       uni.showToast({

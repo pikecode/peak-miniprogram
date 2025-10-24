@@ -62,6 +62,31 @@
       "style": {
         "navigationBarTitleText": "心愿单"
       }
+    },
+    {
+      "path": "pages/addresses/addresses",
+      "style": {
+        "navigationBarTitleText": "地址管理"
+      }
+    },
+    {
+      "path": "pages/addresses/add-edit",
+      "style": {
+        "navigationBarTitleText": "地址",
+        "navigationBarBackgroundColor": "#FFFFFF"
+      }
+    },
+    {
+      "path": "pages/legal/legal",
+      "style": {
+        "navigationBarTitleText": "法律条款"
+      }
+    },
+    {
+      "path": "pages/legal/authorization",
+      "style": {
+        "navigationBarTitleText": "个人信息授权"
+      }
     }
   ],
   "globalStyle": {

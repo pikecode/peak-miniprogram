@@ -109,9 +109,9 @@
       </swiper-item>
     </swiper>
 
-    <!-- 探索更多按钮 -->
+    <!-- 定制咨询按钮 -->
     <view class="explore-more" @tap="onExploreMore">
-      <text class="explore-text">探索更多</text>
+      <text class="explore-text">定制咨询</text>
     </view>
 
     <!-- 轮播指示器 -->
@@ -239,9 +239,8 @@ export default {
       })
     },
     onExploreMore() {
-      uni.showToast({
-        title: '探索更多产品',
-        icon: 'none'
+      uni.navigateTo({
+        url: '/pages/consultation/consultation'
       })
     }
   }

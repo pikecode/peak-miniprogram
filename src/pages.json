@@ -106,6 +106,13 @@
       "style": {
         "navigationBarTitleText": "集合详情"
       }
+    },
+    {
+      "path": "pages/consultation/consultation",
+      "style": {
+        "navigationBarTitleText": "定制咨询",
+        "navigationStyle": "custom"
+      }
     }
   ],
   "globalStyle": {

@@ -6,20 +6,16 @@
         <!-- 左侧：返回与首页 -->
         <view class="nav-pill nav-pill-left">
           <view class="nav-icon-button" @tap="goBack">
-            <view class="icon-arrow-left"></view>
+            <image class="icon-arrow-left" src="/static/icons/arrow-left.svg" mode="widthFix"></image>
           </view>
           <view class="nav-divider"></view>
           <view class="nav-icon-button" @tap="goHome">
-            <view class="icon-home">
-              <view class="home-roof"></view>
-              <view class="home-body"></view>
-              <view class="home-door"></view>
-            </view>
+            <image class="icon-home" src="/static/icons/home-outline.svg" mode="widthFix"></image>
           </view>
         </view>
 
         <!-- 中间：页面标题 -->
-        <text class="nav-title">系列</text>
+        <text class="nav-title">Prada Natural系列</text>
       </view>
     </view>
 
@@ -452,15 +448,15 @@ export default {
     background: #ffffff;
     border: 1rpx solid rgba(0, 0, 0, 0.12);
     border-radius: 999rpx;
-    padding: 0 28rpx;
-    height: 60rpx;
+    padding: 0 20rpx;
+    height: 56rpx;
     box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.06);
     flex-shrink: 0;
   }
 
   .nav-icon-button {
-    width: 60rpx;
-    height: 60rpx;
+    width: 52rpx;
+    height: 52rpx;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -480,55 +476,15 @@ export default {
   }
 
   .icon-arrow-left {
-    width: 24rpx;
-    height: 24rpx;
-    border-left: 4rpx solid #000000;
-    border-bottom: 4rpx solid #000000;
-    transform: rotate(45deg);
+    width: 48rpx;
+    height: 48rpx;
+    display: block;
   }
 
   .icon-home {
-    position: relative;
-    width: 40rpx;
-    height: 40rpx;
-  }
-
-  .home-roof {
-    position: absolute;
-    top: 0;
-    left: 4rpx;
-    width: 32rpx;
-    height: 32rpx;
-    border-left: 4rpx solid #000000;
-    border-top: 4rpx solid #000000;
-    border-right: 4rpx solid #000000;
-    border-radius: 12rpx 12rpx 0 0;
-    transform: rotate(45deg);
-    transform-origin: center;
-    background: #ffffff;
-  }
-
-  .home-body {
-    position: absolute;
-    left: 8rpx;
-    bottom: 4rpx;
-    width: 24rpx;
-    height: 20rpx;
-    border-left: 4rpx solid #000000;
-    border-right: 4rpx solid #000000;
-    border-bottom: 4rpx solid #000000;
-    border-radius: 0 0 12rpx 12rpx;
-    background: #ffffff;
-  }
-
-  .home-door {
-    position: absolute;
-    left: 16rpx;
-    bottom: 8rpx;
-    width: 12rpx;
-    height: 4rpx;
-    background: #000000;
-    border-radius: 999rpx;
+    width: 48rpx;
+    height: 48rpx;
+    display: block;
   }
 }
 

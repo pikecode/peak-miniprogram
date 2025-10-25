@@ -14,9 +14,8 @@
         :indicator-dots="true"
         :indicator-color="indicatorColor"
         :indicator-active-color="indicatorActiveColor"
-        :autoplay="true"
-        :interval="5000"
-        :circular="true"
+        :autoplay="false"
+        :circular="false"
         @change="onBannerChange"
       >
         <!-- 第一个轮播项：WebP 动画 -->
@@ -284,7 +283,6 @@ export default {
     letter-spacing: 4rpx;
     color: #000000;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    transition: all 0.2s ease;
     flex: 1;
   }
 }
@@ -394,7 +392,6 @@ export default {
     .tab-text {
       font-size: 32rpx;
       color: #999999;
-      transition: all 0.3s;
     }
 
     &.active .tab-text {
@@ -540,7 +537,6 @@ export default {
     height: 16rpx;
     border-radius: 50%;
     background: #d8d8d8;
-    transition: all 0.3s;
 
     &.active {
       background: #000000;

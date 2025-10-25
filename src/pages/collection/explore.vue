@@ -8,9 +8,8 @@
         :indicator-dots="true"
         :indicator-active-color="'#000000'"
         :indicator-color="'rgba(0,0,0,0.3)'"
-        :autoplay="true"
-        :interval="5000"
-        :circular="true"
+        :autoplay="false"
+        :circular="false"
         @change="onSwiperChange"
       >
         <swiper-item v-for="(s, i) in heroSlides" :key="i">
@@ -435,7 +434,6 @@ export default {
   font-weight: 500;
   text-decoration: underline;
   text-decoration-thickness: 1rpx;
-  transition: all 0.2s ease;
 
   &:active {
     opacity: 0.7;
@@ -575,13 +573,11 @@ export default {
   justify-content: center;
   font-size: 32rpx;
   font-weight: 600;
-  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   margin: 0 40rpx 32rpx;
 
   &:active {
     background: #333;
-    transform: scale(0.95);
   }
 }
 
@@ -596,13 +592,11 @@ export default {
   justify-content: center;
   font-size: 32rpx;
   font-weight: 600;
-  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   margin: 0 40rpx 40rpx;
 
   &:active {
     background: #f5f5f5;
-    transform: scale(0.95);
   }
 }
 </style>

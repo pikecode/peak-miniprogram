@@ -351,11 +351,9 @@ export default {
     font-size: 28rpx;
     color: #333333;
     border: none;
-    transition: all 0.2s ease;
 
     &:focus {
       background: #f0f0f0;
-      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
     }
   }
 
@@ -369,11 +367,9 @@ export default {
     justify-content: center;
     font-size: 32rpx;
     color: #999999;
-    transition: all 0.2s ease;
 
     &:active {
       color: #333333;
-      transform: scale(0.8);
     }
   }
 }
@@ -464,11 +460,9 @@ export default {
     overflow: hidden;
     cursor: pointer;
     box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     &:active {
-      box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.12);
-      transform: translateY(-2rpx);
+      opacity: 0.9;
     }
 
     .product-image-wrapper {

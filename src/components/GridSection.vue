@@ -85,11 +85,9 @@ export default {
     overflow: hidden;
     background: #ffffff;
     cursor: pointer;
-    transition: all 0.3s ease;
 
     &:active {
-      box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.12);
-      transform: translateY(-2rpx);
+      opacity: 0.9;
     }
 
     .item-image {

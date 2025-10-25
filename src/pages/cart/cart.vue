@@ -221,24 +221,20 @@ export default {
   },
   methods: {
     toggleItemSelect(index) {
-      this.cartItems[index].selected = !this.cartItems[index].selected
-      this.$forceUpdate()
+      this.$set(this.cartItems[index], 'selected', !this.cartItems[index].selected)
     },
     toggleSelectAll() {
       const allSelected = this.isSelectAll
-      this.cartItems.forEach(item => {
-        item.selected = !allSelected
+      this.cartItems.forEach((item, index) => {
+        this.$set(this.cartItems[index], 'selected', !allSelected)
       })
-      this.$forceUpdate()
     },
     increaseQuantity(index) {
-      this.cartItems[index].quantity++
-      this.$forceUpdate()
+      this.$set(this.cartItems[index], 'quantity', this.cartItems[index].quantity + 1)
     },
     decreaseQuantity(index) {
       if (this.cartItems[index].quantity > 1) {
-        this.cartItems[index].quantity--
-        this.$forceUpdate()
+        this.$set(this.cartItems[index], 'quantity', this.cartItems[index].quantity - 1)
       }
     },
     removeItem(index) {
@@ -248,7 +244,6 @@ export default {
         success: (res) => {
           if (res.confirm) {
             this.cartItems.splice(index, 1)
-            this.$forceUpdate()
             uni.showToast({
               title: '已移出购物袋',
               icon: 'none',

@@ -216,11 +216,9 @@ export default {
     height: 8rpx;
     border-radius: 50%;
     background: rgba(0, 0, 0, 0.3);
-    transition: all 0.3s;
 
     &.active {
       background: #000000;
-      transform: scale(1.5);
     }
   }
 }
@@ -310,7 +308,6 @@ export default {
         font-size: 26rpx;
         color: #333333;
         cursor: pointer;
-        transition: all 0.3s;
 
         &.active {
           border-color: #000000;
@@ -341,10 +338,9 @@ export default {
         font-size: 24rpx;
         color: #666666;
         cursor: pointer;
-        transition: all 0.2s;
 
         &:active {
-          background: #f5f5f5;
+          opacity: 0.8;
         }
       }
 
@@ -371,7 +367,6 @@ export default {
       .action-icon {
         font-size: 40rpx;
         color: #999999;
-        transition: all 0.3s;
 
         &.active {
           color: #000000;
@@ -409,10 +404,9 @@ export default {
     font-size: 32rpx;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s;
 
     &:active {
-      transform: scale(0.98);
+      opacity: 0.9;
     }
   }
 

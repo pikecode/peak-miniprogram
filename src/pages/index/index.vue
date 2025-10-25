@@ -14,9 +14,8 @@
         :indicator-dots="true"
         :indicator-color="indicatorColor"
         :indicator-active-color="indicatorActiveColor"
-        :autoplay="true"
-        :interval="5000"
-        :circular="true"
+        :autoplay="false"
+        :circular="false"
         @change="onSwiperChange"
       >
         <!-- 第一个轮播项：WebP 动画 -->
@@ -28,12 +27,12 @@
 
         <!-- 其他轮播项 -->
         <swiper-item v-for="(item, index) in bannerList" :key="index">
-          <view class="banner-item">
+          <view class="banner-item" @tap="onBannerTap(item)">
             <image class="banner-image" :src="item.image" mode="aspectFill"></image>
             <view class="banner-overlay">
-              <text class="banner-title">{{ item.title }}</text>
+              <text class="banner-title" @tap.stop="onBannerTap(item)">{{ item.title }}</text>
               <view class="banner-subtitle">
-                <text class="subtitle-text">{{ item.subtitle }}</text>
+                <text class="subtitle-text" @tap.stop="onBannerTap(item)">{{ item.subtitle }}</text>
                 <view class="subtitle-line"></view>
               </view>
             </view>
@@ -331,6 +330,11 @@ export default {
     onSwiperChange(e) {
       this.currentBannerIndex = e.detail.current
     },
+    onBannerTap(banner) {
+      uni.navigateTo({
+        url: `/pages/collection/detail?collection=${encodeURIComponent(banner.title)}`
+      })
+    },
     onBeautyProductTap(product) {
       uni.navigateTo({
         url: '/pages/product/detail'
@@ -443,12 +447,10 @@ export default {
     justify-content: center;
     font-size: 28rpx;
     font-weight: 600;
-    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
 
     &:active {
       background: #333333;
-      transform: scale(0.95);
     }
   }
 }
@@ -510,12 +512,10 @@ export default {
     background: #000; color: #fff;
     display: flex; align-items: center; justify-content: center;
     font-size: 32rpx; font-weight: 600;
-    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
 
     &:active {
       background: #333;
-      transform: scale(0.95);
     }
   }
 }
@@ -549,7 +549,6 @@ export default {
     letter-spacing: 4rpx;
     color: #000000;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    transition: all 0.2s ease;
   }
 }
 
@@ -645,11 +644,9 @@ export default {
     border-radius: 8rpx;
     overflow: hidden;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     &:active {
-      transform: translateY(-4rpx);
-      box-shadow: 0 8rpx 16rpx rgba(0, 0, 0, 0.08);
+      opacity: 0.9;
     }
 
     .beauty-image-wrapper {

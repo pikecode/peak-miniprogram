@@ -89,10 +89,9 @@ export default {
       display: flex;
       flex-direction: column;
       cursor: pointer;
-      transition: all 0.3s ease;
 
       &:active {
-        transform: scale(0.98);
+        opacity: 0.9;
       }
 
       .recommend-image-wrapper {
@@ -116,11 +115,10 @@ export default {
           right: 12rpx;
           font-size: 32rpx;
           cursor: pointer;
-          transition: all 0.2s ease;
           z-index: 5;
 
           &:active {
-            transform: scale(1.1);
+            opacity: 0.7;
           }
         }
 
@@ -138,7 +136,6 @@ export default {
             height: 8rpx;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.5);
-            transition: all 0.3s ease;
 
             &.active {
               background: #ffffff;

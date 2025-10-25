@@ -7,9 +7,8 @@
         :indicator-dots="true"
         :indicator-color="indicatorColor"
         :indicator-active-color="indicatorActiveColor"
-        :autoplay="true"
-        :interval="5000"
-        :circular="true"
+        :autoplay="false"
+        :circular="false"
         @change="onSwiperChange"
       >
         <!-- 轮播项 -->
@@ -309,10 +308,9 @@ export default {
           display: block;
           font-size: 28rpx;
           cursor: pointer;
-          transition: all 0.2s ease;
 
           &:active {
-            transform: scale(1.15);
+            opacity: 0.8;
           }
 
           &.edit-icon {
@@ -372,10 +370,9 @@ export default {
       align-items: center;
       gap: 12rpx;
       cursor: pointer;
-      transition: all 0.3s ease;
 
       &:active {
-        transform: scale(0.95);
+        opacity: 0.8;
       }
 
       .status-icon-wrapper {
@@ -427,12 +424,10 @@ export default {
     border: 1px solid #f0f0f0;
     border-radius: 8rpx;
     cursor: pointer;
-    transition: all 0.3s ease;
 
     &:active {
       background: #f9f9f9;
       border-color: #000000;
-      transform: scale(0.98);
     }
 
     .quick-access-icon {
@@ -470,12 +465,10 @@ export default {
     border: 1px solid #f0f0f0;
     border-radius: 8rpx;
     cursor: pointer;
-    transition: all 0.3s ease;
 
     &:active {
       background: #f9f9f9;
       border-color: #000000;
-      transform: scale(0.98);
     }
 
     .legal-icon {

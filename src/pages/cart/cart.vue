@@ -259,17 +259,37 @@ export default {
       })
     },
     handleCheckout() {
-      uni.showToast({
-        title: '前往支付',
-        icon: 'none',
-        duration: 1500
+      // 获取选中的商品
+      const selectedItems = this.cartItems.filter(item => item.selected)
+
+      if (selectedItems.length === 0) {
+        uni.showToast({
+          title: '请选择至少一件商品',
+          icon: 'none'
+        })
+        return
+      }
+
+      // 保存选中的商品到本地存储
+      try {
+        uni.setStorageSync('checkoutItems', selectedItems)
+      } catch (e) {
+        console.error('Failed to save checkout items:', e)
+      }
+
+      // 导航到结算页
+      uni.navigateTo({
+        url: '/pages/checkout/checkout'
       })
-      // 可以导航到订单确认页或支付页
-      // uni.navigateTo({
-      //   url: '/pages/checkout/checkout'
-      // })
     },
     onProductTap(item) {
+      // 保存推荐商品信息用于详情页
+      try {
+        uni.setStorageSync('selectedProduct', item)
+      } catch (e) {
+        console.error('Failed to save product:', e)
+      }
+
       uni.navigateTo({
         url: '/pages/product/detail'
       })

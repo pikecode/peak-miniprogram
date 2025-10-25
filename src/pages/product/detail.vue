@@ -158,23 +158,92 @@ export default {
       }
     },
     addToCart() {
-      uni.showToast({
-        title: `已添加 ${this.quantity} 件到购物袋`,
-        icon: 'none'
-      })
-      // 可以在这里添加到购物车的逻辑
-      setTimeout(() => {
-        uni.switchTab({
-          url: '/pages/cart/cart'
+      // 构建购物车项
+      const cartItem = {
+        id: Date.now(),
+        name: this.productData.name,
+        color: this.productData.colors[this.selectedColor],
+        price: this.productData.price.replace(/,/g, ''),
+        quantity: this.quantity,
+        image: this.productImages[0],
+        selected: true
+      }
+
+      try {
+        // 获取现有购物车
+        let cartItems = uni.getStorageSync('cartItems') || []
+
+        // 检查是否已存在相同商品
+        const existingIndex = cartItems.findIndex(
+          (item) => item.name === cartItem.name && item.color === cartItem.color
+        )
+
+        if (existingIndex !== -1) {
+          // 更新数量
+          cartItems[existingIndex].quantity += this.quantity
+        } else {
+          // 添加新商品
+          cartItems.push(cartItem)
+        }
+
+        // 保存到存储
+        uni.setStorageSync('cartItems', cartItems)
+
+        uni.showToast({
+          title: `已添加 ${this.quantity} 件到购物袋`,
+          icon: 'success',
+          duration: 1500
         })
-      }, 1500)
+
+        // 延迟后跳转到购物车
+        setTimeout(() => {
+          uni.switchTab({
+            url: '/pages/cart/cart'
+          })
+        }, 1500)
+      } catch (e) {
+        console.error('Failed to add to cart:', e)
+        uni.showToast({
+          title: '添加失败，请重试',
+          icon: 'none'
+        })
+      }
     },
     buyNow() {
-      uni.showToast({
-        title: '前往结算',
-        icon: 'none'
-      })
-      // 可以在这里导航到结算页面
+      // 直接生成订单并跳转到支付
+      const cartItem = {
+        id: Date.now(),
+        name: this.productData.name,
+        color: this.productData.colors[this.selectedColor],
+        price: this.productData.price.replace(/,/g, ''),
+        quantity: this.quantity,
+        image: this.productImages[0],
+        selected: true
+      }
+
+      try {
+        // 保存为临时购物车（用于立即购买）
+        uni.setStorageSync('checkoutItems', [cartItem])
+
+        uni.showToast({
+          title: '前往结算',
+          icon: 'none',
+          duration: 1000
+        })
+
+        // 延迟后跳转到结算页面
+        setTimeout(() => {
+          uni.navigateTo({
+            url: '/pages/checkout/checkout'
+          })
+        }, 1000)
+      } catch (e) {
+        console.error('Failed to proceed with purchase:', e)
+        uni.showToast({
+          title: '操作失败，请重试',
+          icon: 'none'
+        })
+      }
     }
   }
 }

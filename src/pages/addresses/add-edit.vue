@@ -3,35 +3,15 @@
 
     <!-- 表单内容 -->
     <view class="form-content">
-      <!-- 称谓下拉框 -->
+      <!-- 收货人姓名 -->
       <view class="form-group">
-        <label class="form-label">称谓</label>
-        <view class="form-select" @tap="showTitlePicker">
-          <text class="select-value">{{ selectedTitle || '请选择称谓' }}</text>
-          <text class="select-arrow">▼</text>
-        </view>
-      </view>
-
-      <!-- 姓氏和名字 -->
-      <view class="form-row">
-        <view class="form-group form-group-half">
-          <label class="form-label">姓氏<text class="required">*</text></label>
-          <input
-            v-model="form.lastName"
-            class="form-input"
-            type="text"
-            placeholder="请输入姓氏"
-          />
-        </view>
-        <view class="form-group form-group-half">
-          <label class="form-label">名字<text class="required">*</text></label>
-          <input
-            v-model="form.firstName"
-            class="form-input"
-            type="text"
-            placeholder="请输入名字"
-          />
-        </view>
+        <label class="form-label">收货人<text class="required">*</text></label>
+        <input
+          v-model="form.name"
+          class="form-input"
+          type="text"
+          placeholder="请输入收货人姓名"
+        />
       </view>
 
       <!-- 手机号码 -->
@@ -40,7 +20,7 @@
         <input
           v-model="form.phone"
           class="form-input"
-          type="number"
+          type="text"
           placeholder="请输入手机号码"
         />
       </view>
@@ -74,7 +54,7 @@
       <view class="form-group">
         <label class="form-label">详细地址<text class="required">*</text></label>
         <textarea
-          v-model="form.detailAddress"
+          v-model="form.detail"
           class="form-textarea"
           placeholder="请输入详细地址"
           :fixed="true"
@@ -105,18 +85,17 @@
 export default {
   data() {
     return {
-      selectedTitle: '',
+      mode: 'add', // 'add' or 'edit'
       form: {
-        lastName: '',
-        firstName: '',
+        id: null,
+        name: '',
         phone: '',
         province: '',
         city: '',
         district: '',
-        detailAddress: '',
+        detail: '',
         isDefault: false
       },
-      titles: ['先生', '女士', '其他'],
       provinces: [
         '北京市', '天津市', '河北省', '山西省', '内蒙古自治区',
         '辽宁省', '吉林省', '黑龙江省', '上海市', '江苏省',
@@ -135,36 +114,26 @@ export default {
   },
   onLoad(options) {
     console.log('地址添加编辑页面加载')
+    if (options.mode) {
+      this.mode = options.mode
+    }
     // 如果是编辑模式，加载现有地址数据
-    if (options.id) {
-      // 从列表加载地址数据
-      this.loadAddressData(options.id)
+    if (options.mode === 'edit' && options.id) {
+      this.loadAddressData(parseInt(options.id))
     }
   },
   methods: {
     loadAddressData(id) {
-      // 模拟加载地址数据
-      // 实际应用中应从数据库或API获取
-      this.form = {
-        lastName: '王',
-        firstName: '先生',
-        phone: '18600000001',
-        province: '北京市',
-        city: '东城区',
-        district: '东城区',
-        detailAddress: '王府井大街100号',
-        isDefault: true
-      }
-    },
-    showTitlePicker() {
-      uni.showActionSheet({
-        itemList: this.titles,
-        success: (res) => {
-          if (res.tapIndex !== -1) {
-            this.selectedTitle = this.titles[res.tapIndex]
-          }
+      // 从存储中加载地址数据
+      try {
+        const addresses = uni.getStorageSync('userAddresses') || []
+        const address = addresses.find(a => a.id === id)
+        if (address) {
+          this.form = { ...address }
         }
-      })
+      } catch (e) {
+        console.error('Failed to load address:', e)
+      }
     },
     showProvincePicker() {
       uni.showActionSheet({
@@ -211,17 +180,9 @@ export default {
     },
     onSaveAddress() {
       // 验证必填字段
-      if (!this.form.lastName) {
+      if (!this.form.name) {
         uni.showToast({
-          title: '请输入姓氏',
-          icon: 'none',
-          duration: 1000
-        })
-        return
-      }
-      if (!this.form.firstName) {
-        uni.showToast({
-          title: '请输入名字',
+          title: '请输入收货人姓名',
           icon: 'none',
           duration: 1000
         })
@@ -251,7 +212,7 @@ export default {
         })
         return
       }
-      if (!this.form.detailAddress) {
+      if (!this.form.detail) {
         uni.showToast({
           title: '请输入详细地址',
           icon: 'none',
@@ -260,17 +221,68 @@ export default {
         return
       }
 
-      // 保存地址
-      uni.showToast({
-        title: '地址保存成功',
-        icon: 'success',
-        duration: 1500
-      })
+      try {
+        // 生成ID（如果是新地址）
+        if (!this.form.id) {
+          const addresses = uni.getStorageSync('userAddresses') || []
+          this.form.id = Math.max(0, ...addresses.map(a => a.id)) + 1
+        }
 
-      // 延迟返回上一页
-      setTimeout(() => {
-        uni.navigateBack()
-      }, 1500)
+        // 获取现有地址列表
+        const addresses = uni.getStorageSync('userAddresses') || []
+
+        if (this.mode === 'add') {
+          // 如果设置为默认，取消其他地址的默认标志
+          if (this.form.isDefault) {
+            addresses.forEach(a => a.isDefault = false)
+          }
+          addresses.push(this.form)
+        } else {
+          // 编辑模式
+          const index = addresses.findIndex(a => a.id === this.form.id)
+          if (index !== -1) {
+            if (this.form.isDefault) {
+              addresses.forEach(a => a.isDefault = false)
+            }
+            addresses[index] = this.form
+          }
+        }
+
+        // 保存到存储
+        uni.setStorageSync('userAddresses', addresses)
+
+        // 通过事件通知（如果存在）
+        try {
+          if (this.$wx && typeof this.$wx.getOpenerEventChannel === 'function') {
+            const eventChannel = this.$wx.getOpenerEventChannel()
+            if (eventChannel) {
+              const eventName = this.mode === 'add' ? 'addressAdded' : 'addressUpdated'
+              eventChannel.emit(eventName, this.form)
+            }
+          }
+        } catch (e) {
+          console.error('Failed to emit event:', e)
+        }
+
+        // 保存地址成功提示
+        uni.showToast({
+          title: '地址保存成功',
+          icon: 'success',
+          duration: 1500
+        })
+
+        // 延迟返回上一页
+        setTimeout(() => {
+          uni.navigateBack()
+        }, 1500)
+      } catch (e) {
+        console.error('Failed to save address:', e)
+        uni.showToast({
+          title: '保存失败，请重试',
+          icon: 'none',
+          duration: 1000
+        })
+      }
     }
   }
 }

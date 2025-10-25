@@ -195,15 +195,16 @@ export default {
       }
     },
     onProductTap(item) {
-      uni.showToast({
-        title: item.name,
-        icon: 'none',
-        duration: 1500
+      // 保存推荐商品信息用于详情页
+      try {
+        uni.setStorageSync('selectedProduct', item)
+      } catch (e) {
+        console.error('Failed to save product:', e)
+      }
+
+      uni.navigateTo({
+        url: '/pages/product/detail'
       })
-      // 可以导航到产品详情页
-      // uni.navigateTo({
-      //   url: `/pages/product/detail?id=${item.id}`
-      // })
     },
     onFavoriteChange({ index, isFavorite }) {
       const status = isFavorite ? '已收藏' : '已移除'

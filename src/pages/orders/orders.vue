@@ -1,65 +1,102 @@
 <template>
-  <view class="orders-page">
-   
-
-    <!-- 标签页 -->
-    <view class="tabs-container">
-      <view
-        v-for="(tab, index) in tabs"
-        :key="index"
-        class="tab-item"
-        :class="{ active: activeTab === index }"
-        @tap="selectTab(index)"
-      >
-        <text>{{ tab.label }}</text>
-      </view>
-      <view class="tab-indicator" :style="{ left: activeTab * 20 + '%' }"></view>
+  <view class="page">
+    <!-- 页面头部 -->
+    <view class="orders-header">
+      <text class="header-title">我的订单</text>
     </view>
 
-    <!-- 内容区域 -->
-    <view class="orders-content">
-      <!-- 空状态 -->
-      <view v-if="!hasOrders" class="empty-state">
-        <text class="empty-icon">📋</text>
-        <text class="empty-text">您还没有相关订单</text>
-        <view class="shop-btn" @tap="goShopping">
-          <text>立即选购</text>
+    <!-- 订单标签页 -->
+    <view class="order-tabs">
+      <view
+        v-for="(tab, index) in orderTabs"
+        :key="index"
+        class="tab-item"
+        :class="{ active: activeTab === tab.value }"
+        @tap="selectTab(tab.value)"
+      >
+        <text>{{ tab.label }}</text>
+        <view v-if="tab.count > 0" class="tab-badge">{{ tab.count }}</view>
+      </view>
+    </view>
+
+    <!-- 订单列表 -->
+    <view v-if="filteredOrders.length > 0" class="orders-list">
+      <view
+        v-for="(order, index) in filteredOrders"
+        :key="index"
+        class="order-item"
+        @tap="goToOrderDetail(order)"
+      >
+        <!-- 订单头部 -->
+        <view class="order-header">
+          <view class="order-info">
+            <text class="order-id">订单号: {{ order.orderId }}</text>
+            <text class="order-date">{{ formatTime(order.createdAt) }}</text>
+          </view>
+          <view class="order-status" :class="order.status">{{ order.statusText }}</view>
+        </view>
+
+        <!-- 订单商品 -->
+        <view class="order-items">
+          <view
+            v-for="(item, itemIndex) in order.items.slice(0, 1)"
+            :key="itemIndex"
+            class="order-item-card"
+          >
+            <image class="item-image" :src="item.image" mode="aspectFill"></image>
+            <view class="item-info">
+              <text class="item-name">{{ item.name }}</text>
+              <text class="item-color">{{ item.color }}</text>
+            </view>
+            <text class="item-quantity">x{{ item.quantity }}</text>
+          </view>
+          <view v-if="order.items.length > 1" class="more-items">
+            还有 {{ order.items.length - 1 }} 件商品
+          </view>
+        </view>
+
+        <!-- 订单底部 -->
+        <view class="order-footer">
+          <view class="order-total">
+            <text class="total-label">共</text>
+            <text class="total-items">{{ order.items.length }}</text>
+            <text class="total-label">件，合计</text>
+            <text class="total-amount">¥{{ order.total }}</text>
+          </view>
+          <view v-if="order.status === 'pending'" class="action-btns">
+            <view class="action-btn primary" @tap.stop="goToPayment(order)">
+              <text>立即支付</text>
+            </view>
+          </view>
+          <view v-else class="action-btns">
+            <view class="action-btn secondary" @tap.stop="viewOrder(order)">
+              <text>查看详情</text>
+            </view>
+          </view>
         </view>
       </view>
+    </view>
 
-      <!-- 订单列表（当有订单时显示） -->
-      <view v-else class="orders-list">
-        <view
-          v-for="(order, index) in filteredOrders"
-          :key="index"
-          class="order-card"
-        >
-          <view class="order-header">
-            <text class="order-status" :class="order.status">{{ order.statusText }}</text>
-            <text class="order-date">{{ order.date }}</text>
-          </view>
-          <view class="order-items">
-            <view
-              v-for="(item, itemIndex) in order.items"
-              :key="itemIndex"
-              class="order-item"
-            >
-              <image :src="item.image" class="item-image"></image>
-              <view class="item-info">
-                <text class="item-name">{{ item.name }}</text>
-                <text class="item-price">¥{{ item.price }}</text>
-              </view>
-              <text class="item-quantity">x{{ item.quantity }}</text>
-            </view>
-          </view>
-          <view class="order-footer">
-            <text class="total-price">共{{ order.totalItems }}件 合计：¥{{ order.totalPrice }}</text>
-            <view class="order-actions">
-              <view class="action-btn" @tap="onOrderAction('detail', order)">
-                <text>订单详情</text>
-              </view>
-            </view>
-          </view>
+    <!-- 空状态 -->
+    <view v-else class="empty-state">
+      <view class="empty-illustration">
+        <text class="empty-icon">📦</text>
+      </view>
+      <text class="empty-title">
+        {{
+          activeTab === 'all'
+            ? '还没有订单'
+            : activeTab === 'pending'
+            ? '没有待支付订单'
+            : activeTab === 'completed'
+            ? '没有已完成订单'
+            : '没有已取消订单'
+        }}
+      </text>
+      <text class="empty-description">去选购喜欢的商品吧</text>
+      <view class="empty-action">
+        <view class="action-btn primary" @tap="goToHome">
+          <text>继续购物</text>
         </view>
       </view>
     </view>
@@ -70,212 +107,426 @@
 export default {
   data() {
     return {
-      activeTab: 0,
-      tabs: [
-        { label: '全部', status: 'all' },
-        { label: '待支付', status: 'pending-payment' },
-        { label: '待发货', status: 'pending-shipment' },
-        { label: '已发货', status: 'shipped' },
-        { label: '售后', status: 'aftersales' }
+      activeTab: 'all',
+      orderTabs: [
+        { label: '全部', value: 'all', count: 0 },
+        { label: '待支付', value: 'pending', count: 0 },
+        { label: '已完成', value: 'completed', count: 0 },
+        { label: '已取消', value: 'cancelled', count: 0 }
       ],
-      orders: [
-        {
-          id: '2024101001',
-          status: 'pending-payment',
-          statusText: '待支付',
-          date: '2024-10-10',
-          totalItems: 1,
-          totalPrice: '17,900',
-          items: [
-            {
-              name: '【粉星同款】Prada Explore 中号Re-Nylon单肩包',
-              price: '17,900',
-              quantity: 1,
-              image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=100&q=80'
-            }
-          ]
-        },
-        {
-          id: '2024100901',
-          status: 'pending-shipment',
-          statusText: '待发货',
-          date: '2024-10-09',
-          totalItems: 2,
-          totalPrice: '44,300',
-          items: [
-            {
-              name: '【特售】Prada Explore中号Nappa牛皮革单肩包',
-              price: '26,400',
-              quantity: 1,
-              image: 'https://images.unsplash.com/photo-1596736342875-ff5348bf9908?w=100&q=80'
-            },
-            {
-              name: 'Re-Nylon双肩背包',
-              price: '19,500',
-              quantity: 1,
-              image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=100&q=80'
-            }
-          ]
-        }
-      ],
-      hasOrders: false
+      orders: []
     }
   },
   computed: {
     filteredOrders() {
-      if (this.activeTab === 0) {
+      if (this.activeTab === 'all') {
         return this.orders
       }
-      const statusFilter = this.tabs[this.activeTab].status
-      return this.orders.filter(order => order.status === statusFilter)
+      return this.orders.filter((order) => order.status === this.activeTab)
     }
   },
-  onLoad(options) {
-    console.log('订单页面加载完成')
-    // 根据路由参数设置默认tab
-    if (options.status && options.status !== 'all') {
-      const statusIndex = this.tabs.findIndex(tab => tab.status === options.status)
-      if (statusIndex !== -1) {
-        this.activeTab = statusIndex
-      }
-    }
-    // 模拟订单数据，如果当前选项卡没有订单，则显示空状态
-    this.updateOrdersDisplay()
+  onLoad() {
+    this.loadOrders()
   },
   methods: {
-    selectTab(index) {
-      this.activeTab = index
-      this.updateOrdersDisplay()
+    loadOrders() {
+      try {
+        // 从存储加载订单历史
+        const orders = uni.getStorageSync('orderHistory') || []
+
+        // 如果没有订单，创建模拟数据
+        if (orders.length === 0) {
+          this.orders = [
+            {
+              id: 1,
+              orderId: 'ORD20231025001',
+              items: [
+                {
+                  id: 1,
+                  name: '【明星同款】Prada Explore 中号Re-Nylon单肩包',
+                  color: '黑色',
+                  price: '17900',
+                  quantity: 1,
+                  image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&q=80'
+                }
+              ],
+              total: '17910',
+              subtotal: '17900',
+              expressPrice: '10',
+              discount: '0',
+              status: 'completed',
+              statusText: '已完成',
+              createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
+            },
+            {
+              id: 2,
+              orderId: 'ORD20231024001',
+              items: [
+                {
+                  id: 2,
+                  name: 'Re-Nylon双肩背包',
+                  color: '蓝色',
+                  price: '21800',
+                  quantity: 1,
+                  image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&q=80'
+                }
+              ],
+              total: '21810',
+              subtotal: '21800',
+              expressPrice: '10',
+              discount: '0',
+              status: 'pending',
+              statusText: '待支付',
+              createdAt: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString()
+            },
+            {
+              id: 3,
+              orderId: 'ORD20231023001',
+              items: [
+                {
+                  id: 3,
+                  name: 'Prada Bonnie 迷你牛皮革手袋',
+                  color: '红色',
+                  price: '12500',
+                  quantity: 2,
+                  image: 'https://images.unsplash.com/photo-1548062407-f961713e6786?w=400&q=80'
+                },
+                {
+                  id: 4,
+                  name: '亮面皮革乐福鞋',
+                  color: '黑色',
+                  price: '8900',
+                  quantity: 1,
+                  image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=400&q=80'
+                }
+              ],
+              total: '42410',
+              subtotal: '42400',
+              expressPrice: '10',
+              discount: '0',
+              status: 'completed',
+              statusText: '已完成',
+              createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString()
+            }
+          ]
+          this.saveOrders()
+        } else {
+          this.orders = orders
+        }
+
+        // 更新标签页计数
+        this.updateTabCounts()
+      } catch (e) {
+        console.error('Failed to load orders:', e)
+      }
     },
-    updateOrdersDisplay() {
-      this.hasOrders = this.filteredOrders.length > 0
+    saveOrders() {
+      try {
+        uni.setStorageSync('orderHistory', this.orders)
+      } catch (e) {
+        console.error('Failed to save orders:', e)
+      }
     },
-    goBack() {
-      uni.navigateBack()
+    updateTabCounts() {
+      const counts = {
+        all: this.orders.length,
+        pending: this.orders.filter((o) => o.status === 'pending').length,
+        completed: this.orders.filter((o) => o.status === 'completed').length,
+        cancelled: this.orders.filter((o) => o.status === 'cancelled').length
+      }
+
+      this.orderTabs.forEach((tab) => {
+        tab.count = counts[tab.value]
+      })
     },
-    goShopping() {
+    selectTab(value) {
+      this.activeTab = value
+    },
+    formatTime(dateString) {
+      const date = new Date(dateString)
+      const year = date.getFullYear()
+      const month = String(date.getMonth() + 1).padStart(2, '0')
+      const day = String(date.getDate()).padStart(2, '0')
+      const hours = String(date.getHours()).padStart(2, '0')
+      const minutes = String(date.getMinutes()).padStart(2, '0')
+      return `${year}-${month}-${day} ${hours}:${minutes}`
+    },
+    goToOrderDetail(order) {
+      uni.navigateTo({
+        url: `/pages/orders/detail?orderId=${order.id}`
+      })
+    },
+    viewOrder(order) {
+      uni.navigateTo({
+        url: `/pages/orders/detail?orderId=${order.id}`
+      })
+    },
+    goToPayment(order) {
+      // 保存当前订单到存储，供支付页面使用
+      try {
+        uni.setStorageSync('currentOrder', order)
+      } catch (e) {
+        console.error('Failed to save order:', e)
+      }
+
+      uni.navigateTo({
+        url: '/pages/payment/payment'
+      })
+    },
+    goToHome() {
       uni.switchTab({
         url: '/pages/index/index'
       })
-    },
-    onOrderAction(action, order) {
-      if (action === 'detail') {
-        uni.showToast({
-          title: `订单 ${order.id}`,
-          icon: 'none',
-          duration: 1500
-        })
-        // 可以导航到订单详情页
-        // uni.navigateTo({
-        //   url: `/pages/orders/detail?id=${order.id}`
-        // })
-      }
     }
   }
 }
 </script>
 
-<style lang="scss">
-.orders-page {
-  min-height: 100vh;
-  background: #ffffff;
+<style lang="scss" scoped>
+.page {
+  background: #f9f9f9;
+  padding-bottom: 20rpx;
 }
 
-/* 自定义导航栏 */
-.custom-navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16rpx 0;
-  padding-top: 32rpx;
+/* 页面头部 */
+.orders-header {
   background: #ffffff;
+  padding: 20rpx 24rpx;
   border-bottom: 1px solid #f0f0f0;
-  position: sticky;
-  top: 0;
-  z-index: 100;
 
-  .navbar-left {
-    flex: 1;
-    padding-left: 24rpx;
-  }
-
-  .back-btn {
-    display: block;
-    font-size: 48rpx;
-    color: #000000;
-    cursor: pointer;
-    line-height: 1;
-  }
-
-  .navbar-title {
+  .header-title {
     display: block;
     font-size: 32rpx;
     font-weight: 600;
     color: #000000;
-    flex: 2;
     text-align: center;
-  }
-
-  .navbar-right {
-    flex: 1;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 16rpx;
-    padding-right: 24rpx;
-
-    .navbar-icon {
-      display: block;
-      font-size: 32rpx;
-      color: #000000;
-      cursor: pointer;
-      line-height: 1;
-    }
   }
 }
 
-/* 标签页 */
-.tabs-container {
-  position: relative;
-  display: flex;
+/* 订单标签页 */
+.order-tabs {
   background: #ffffff;
+  display: flex;
   border-bottom: 1px solid #f0f0f0;
-  overflow-x: auto;
-  overflow-y: hidden;
+  padding: 0 20rpx;
 
   .tab-item {
     flex: 1;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8rpx;
     padding: 20rpx 0;
     font-size: 26rpx;
     color: #999999;
-    font-weight: 400;
-    white-space: nowrap;
-    cursor: pointer;
-    transition: color 0.3s ease;
+    border-bottom: 3px solid transparent;
+    position: relative;
 
     &.active {
       color: #000000;
-      font-weight: 500;
+      border-bottom-color: #000000;
+      font-weight: 600;
     }
-  }
 
-  .tab-indicator {
-    position: absolute;
-    bottom: 0;
-    height: 4rpx;
-    width: 20%;
-    background: #000000;
-    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border-radius: 2rpx;
+    .tab-badge {
+      display: inline-block;
+      min-width: 28rpx;
+      height: 28rpx;
+      padding: 0 6rpx;
+      background: #ff4444;
+      color: #ffffff;
+      border-radius: 14rpx;
+      font-size: 18rpx;
+      font-weight: 600;
+      text-align: center;
+      line-height: 28rpx;
+    }
   }
 }
 
-/* 订单内容区域 */
-.orders-content {
-  min-height: calc(100vh - 200rpx);
-  padding: 40rpx;
+/* 订单列表 */
+.orders-list {
+  padding: 16rpx 20rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.order-item {
   background: #ffffff;
+  border-radius: 8rpx;
+  overflow: hidden;
+  border: 1px solid #f0f0f0;
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16rpx 20rpx;
+  border-bottom: 1px solid #f0f0f0;
+
+  .order-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4rpx;
+
+    .order-id {
+      display: block;
+      font-size: 26rpx;
+      color: #000000;
+      font-weight: 500;
+    }
+
+    .order-date {
+      display: block;
+      font-size: 22rpx;
+      color: #999999;
+    }
+  }
+
+  .order-status {
+    padding: 6rpx 12rpx;
+    border-radius: 4rpx;
+    font-size: 22rpx;
+    font-weight: 500;
+    background: #f0f0f0;
+    color: #666666;
+
+    &.pending {
+      background: #fff3e0;
+      color: #ff7a00;
+    }
+
+    &.completed {
+      background: #e8f5e9;
+      color: #00b26a;
+    }
+
+    &.cancelled {
+      background: #ffebee;
+      color: #cc0000;
+    }
+  }
+}
+
+.order-items {
+  padding: 12rpx 20rpx;
+  border-bottom: 1px solid #f0f0f0;
+
+  .order-item-card {
+    display: flex;
+    gap: 12rpx;
+    align-items: flex-start;
+
+    .item-image {
+      width: 80rpx;
+      height: 80rpx;
+      background: #f0f0f0;
+      border-radius: 4rpx;
+      flex-shrink: 0;
+    }
+
+    .item-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4rpx;
+
+      .item-name {
+        display: block;
+        font-size: 26rpx;
+        color: #000000;
+        font-weight: 500;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .item-color {
+        display: block;
+        font-size: 22rpx;
+        color: #999999;
+      }
+    }
+
+    .item-quantity {
+      display: block;
+      font-size: 26rpx;
+      color: #666666;
+      flex-shrink: 0;
+    }
+  }
+
+  .more-items {
+    display: block;
+    padding: 12rpx 0;
+    font-size: 22rpx;
+    color: #999999;
+    text-align: center;
+  }
+}
+
+.order-footer {
+  padding: 16rpx 20rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .order-total {
+    display: flex;
+    align-items: center;
+    gap: 4rpx;
+
+    .total-label {
+      font-size: 24rpx;
+      color: #666666;
+    }
+
+    .total-items {
+      font-size: 28rpx;
+      color: #000000;
+      font-weight: 600;
+    }
+
+    .total-amount {
+      font-size: 28rpx;
+      color: #000000;
+      font-weight: 700;
+    }
+  }
+
+  .action-btns {
+    display: flex;
+    gap: 8rpx;
+
+    .action-btn {
+      padding: 8rpx 16rpx;
+      border-radius: 4rpx;
+      font-size: 22rpx;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+
+      &.primary {
+        background: #000000;
+        color: #ffffff;
+
+        &:active {
+          background: #333333;
+        }
+      }
+
+      &.secondary {
+        background: #f0f0f0;
+        color: #333333;
+
+        &:active {
+          background: #d0d0d0;
+        }
+      }
+    }
+  }
 }
 
 /* 空状态 */
@@ -284,196 +535,50 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 120rpx 40rpx;
-  gap: 24rpx;
+  padding: 100rpx 40rpx;
+  text-align: center;
 
-  .empty-icon {
-    display: block;
-    font-size: 80rpx;
-    margin-bottom: 20rpx;
-  }
+  .empty-illustration {
+    margin-bottom: 24rpx;
 
-  .empty-text {
-    display: block;
-    font-size: 28rpx;
-    color: #999999;
-    font-weight: 400;
-  }
-
-  .shop-btn {
-    margin-top: 40rpx;
-    padding: 20rpx 60rpx;
-    background: #000000;
-    color: #ffffff;
-    border-radius: 8rpx;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-
-    &:active {
-      background: #333333;
-      transform: scale(0.98);
-    }
-
-    text {
+    .empty-icon {
+      font-size: 80rpx;
       display: block;
-      font-size: 28rpx;
-      font-weight: 500;
     }
   }
-}
 
-/* 订单列表 */
-.orders-list {
-  display: flex;
-  flex-direction: column;
-  gap: 24rpx;
+  .empty-title {
+    display: block;
+    font-size: 32rpx;
+    font-weight: 600;
+    color: #000000;
+    margin-bottom: 8rpx;
+  }
 
-  .order-card {
-    background: #ffffff;
-    border: 1px solid #f0f0f0;
-    border-radius: 8rpx;
-    overflow: hidden;
-    transition: all 0.3s ease;
+  .empty-description {
+    display: block;
+    font-size: 26rpx;
+    color: #999999;
+    margin-bottom: 40rpx;
+  }
 
-    &:active {
-      box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
-    }
+  .empty-action {
+    width: 100%;
 
-    .order-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16rpx 20rpx;
-      background: #f9f9f9;
-      border-bottom: 1px solid #f0f0f0;
+    .action-btn {
+      width: 100%;
+      padding: 20rpx 0;
+      border-radius: 8rpx;
+      font-size: 28rpx;
+      font-weight: 600;
+      cursor: pointer;
 
-      .order-status {
-        display: block;
-        font-size: 24rpx;
-        font-weight: 500;
-        color: #666666;
+      &.primary {
+        background: #000000;
+        color: #ffffff;
 
-        &.pending-payment {
-          color: #ff6b35;
-        }
-
-        &.pending-shipment {
-          color: #ffa500;
-        }
-
-        &.shipped {
-          color: #4285f4;
-        }
-
-        &.aftersales {
-          color: #999999;
-        }
-      }
-
-      .order-date {
-        display: block;
-        font-size: 22rpx;
-        color: #999999;
-      }
-    }
-
-    .order-items {
-      padding: 20rpx;
-      border-bottom: 1px solid #f0f0f0;
-
-      .order-item {
-        display: flex;
-        gap: 12rpx;
-        margin-bottom: 16rpx;
-
-        &:last-child {
-          margin-bottom: 0;
-        }
-
-        .item-image {
-          width: 80rpx;
-          height: 80rpx;
-          background: #f5f5f5;
-          border-radius: 4rpx;
-          display: block;
-        }
-
-        .item-info {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-
-          .item-name {
-            display: block;
-            font-size: 24rpx;
-            color: #333333;
-            margin-bottom: 8rpx;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-          }
-
-          .item-price {
-            display: block;
-            font-size: 24rpx;
-            color: #000000;
-            font-weight: 600;
-          }
-        }
-
-        .item-quantity {
-          display: block;
-          font-size: 24rpx;
-          color: #999999;
-          align-self: center;
-          white-space: nowrap;
-        }
-      }
-    }
-
-    .order-footer {
-      padding: 16rpx 20rpx;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      .total-price {
-        display: block;
-        font-size: 24rpx;
-        color: #333333;
-      }
-
-      .order-actions {
-        display: flex;
-        gap: 12rpx;
-
-        .action-btn {
-          padding: 12rpx 20rpx;
-          border: 1px solid #000000;
-          border-radius: 4rpx;
-          cursor: pointer;
-          transition: all 0.3s ease;
-
-          &:active {
-            background: #000000;
-
-            text {
-              color: #ffffff;
-            }
-          }
-
-          text {
-            display: block;
-            font-size: 22rpx;
-            color: #000000;
-            font-weight: 400;
-          }
+        &:active {
+          background: #333333;
         }
       }
     }

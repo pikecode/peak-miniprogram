@@ -334,11 +334,25 @@ export default {
       })
     },
     onBeautyProductTap(product) {
+      // 保存推荐商品信息用于详情页
+      try {
+        uni.setStorageSync('selectedProduct', product)
+      } catch (e) {
+        console.error('Failed to save product:', e)
+      }
+
       uni.navigateTo({
         url: '/pages/product/detail'
       })
     },
     onProductTap(product) {
+      // 保存推荐商品信息用于详情页
+      try {
+        uni.setStorageSync('selectedProduct', product)
+      } catch (e) {
+        console.error('Failed to save product:', e)
+      }
+
       uni.navigateTo({
         url: '/pages/product/detail'
       })

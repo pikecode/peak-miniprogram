@@ -1,11 +1,7 @@
 <template>
   <view class="page">
     <!-- 自定义顶部导航栏 -->
-    <view class="custom-navbar">
-      <view class="navbar-content">
-        <text class="brand-logo">RUIZHU</text>
-      </view>
-    </view>
+    <CustomNavbar title="RUIZHU" />
 
     <!-- 轮播图区域（包含动画和其他banner） -->
     <view class="banner-section">
@@ -172,10 +168,12 @@
 
 <script>
 import GridSection from '@/components/GridSection.vue'
+import CustomNavbar from '@/components/CustomNavbar.vue'
 
 export default {
   components: {
-    GridSection
+    GridSection,
+    CustomNavbar
   },
   data() {
     return {
@@ -517,38 +515,6 @@ export default {
     &:active {
       background: #333;
     }
-  }
-}
-
-/* 自定义导航栏 */
-.custom-navbar {
-  position: sticky;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  background: #ffffff;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 1rpx 3rpx rgba(0, 0, 0, 0.06);
-  padding-top: constant(safe-area-inset-top);
-  padding-top: env(safe-area-inset-top);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-
-  .navbar-content {
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-start;
-    padding: 20rpx 40rpx 20rpx 40rpx;
-    height: 140rpx;
-  }
-
-  .brand-logo {
-    font-size: 48rpx;
-    font-weight: 700;
-    letter-spacing: 4rpx;
-    color: #000000;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
 }
 

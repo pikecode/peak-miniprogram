@@ -16,7 +16,8 @@
     {
       "path": "pages/gifts/gifts",
       "style": {
-        "navigationBarTitleText": "VIP私人定制"
+        "navigationBarTitleText": "VIP私人定制", 
+        "navigationStyle": "custom"
       }
     },
     {

@@ -45,7 +45,7 @@
           @tap="onOrderStatusTap(status)"
         >
           <view class="status-icon-wrapper">
-            <text class="status-icon">{{ status.icon }}</text>
+            <image class="status-icon" :src="status.icon" mode="aspectFit"></image>
           </view>
           <text class="status-label">{{ status.label }}</text>
         </view>
@@ -113,10 +113,10 @@ export default {
         }
       ],
       orderStatuses: [
-        { id: 'pending-payment', label: '待支付', icon: '◆' },
-        { id: 'pending-shipment', label: '待发货', icon: '□' },
-        { id: 'shipped', label: '已发货', icon: '▶' },
-        { id: 'aftersales', label: '售后', icon: '⊙' }
+        { id: 'pending-payment', label: '待支付', icon: '/static/icons/order-pending-payment.svg' },
+        { id: 'pending-shipment', label: '待发货', icon: '/static/icons/order-pending-shipment.svg' },
+        { id: 'shipped', label: '已发货', icon: '/static/icons/order-shipped.svg' },
+        { id: 'aftersales', label: '售后', icon: '/static/icons/order-aftersales.svg' }
       ],
       recommendProducts: [
         {
@@ -368,7 +368,7 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 12rpx;
+      gap: 2rpx;
       cursor: pointer;
 
       &:active {
@@ -379,14 +379,13 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 64rpx;
-        height: 64rpx;
-        
-      
+        width: 88rpx;
+        height: 88rpx;
 
         .status-icon {
+          width: 56rpx;
+          height: 56rpx;
           display: block;
-          font-size: 36rpx;
         }
       }
 
@@ -399,8 +398,7 @@ export default {
       }
 
       &:active .status-icon-wrapper {
-        border-color: #000000;
-        background: #f9f9f9;
+        opacity: 0.8;
       }
     }
   }

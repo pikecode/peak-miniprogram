@@ -1,23 +1,7 @@
 <template>
   <view class="page">
     <!-- 自定义顶部导航栏 -->
-    <view class="custom-navbar">
-      <view class="navbar-content">
-        <!-- 左侧：返回与首页 -->
-        <view class="nav-pill nav-pill-left">
-          <view class="nav-icon-button" @tap="goBack">
-            <image class="icon-arrow-left" src="/static/icons/arrow-left.svg" mode="widthFix"></image>
-          </view>
-          <view class="nav-divider"></view>
-          <view class="nav-icon-button" @tap="goHome">
-            <image class="icon-home" src="/static/icons/home-outline.svg" mode="widthFix"></image>
-          </view>
-        </view>
-
-        <!-- 中间：页面标题 -->
-        <text class="nav-title">Prada Natural系列</text>
-      </view>
-    </view>
+    <ConsultationNavbar title="Prada Natural系列" />
 
     <!-- 页面标题 -->
     <view class="header-section">
@@ -25,24 +9,11 @@
       <text class="subtitle">选择您感兴趣的产品开启定制之旅</text>
     </view>
 
-    <!-- 产品分类 -->
-    <view class="category-tabs">
-      <view
-        v-for="(category, index) in categories"
-        :key="index"
-        class="category-tab"
-        :class="{ active: activeCategory === index }"
-        @tap="activeCategory = index"
-      >
-        <text>{{ category.name }}</text>
-      </view>
-    </view>
-
     <!-- 产品网格 -->
     <view class="products-container">
-      <view v-if="filteredProducts.length > 0" class="product-grid">
+      <view class="product-grid">
         <view
-          v-for="(product, index) in filteredProducts"
+          v-for="(product, index) in displayProducts"
           :key="index"
           class="product-card"
           @tap="onProductSelect(product)"
@@ -51,7 +22,7 @@
           <view class="product-image-wrapper">
             <image class="product-image" :src="product.image" mode="aspectFill"></image>
             <view class="badge">{{ product.isNew ? '新品' : '' }}</view>
-            <text class="favorite-icon" @tap.stop="toggleFavorite(index)">
+            <text class="favorite-icon" @tap.stop="toggleFavorite(product.id)">
               {{ product.isFavorite ? '♥' : '♡' }}
             </text>
           </view>
@@ -74,11 +45,6 @@
             ></view>
           </view>
         </view>
-      </view>
-
-      <!-- 空状态 -->
-      <view v-else class="empty-state">
-        <text class="empty-text">暂无产品</text>
       </view>
     </view>
 
@@ -157,10 +123,14 @@
 </template>
 
 <script>
+import ConsultationNavbar from '@/components/ConsultationNavbar.vue'
+
 export default {
+  components: {
+    ConsultationNavbar
+  },
   data() {
     return {
-      activeCategory: 0,
       selectedProduct: null,
       consultForm: {
         name: '',
@@ -169,59 +139,10 @@ export default {
         colorIndex: 0,
         remarks: ''
       },
-      categories: [
-        { id: 'all', name: '全部产品' },
-        { id: 'bag', name: '背包' },
-        { id: 'clothing', name: '服装' },
-        { id: 'shoes', name: '鞋履' }
-      ],
       products: [
-        // 背包系列
-        {
-          id: 1,
-          name: 'Re-Nylon双肩背包',
-          color: '黑色',
-          price: '21,800',
-          image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&q=80',
-          category: 'bag',
-          isNew: true,
-          isFavorite: false,
-          colors: [
-            { name: '黑色', value: '#000000' },
-            { name: '棕色', value: '#8B4513' }
-          ]
-        },
-        {
-          id: 2,
-          name: 'Re-Nylon双肩背包',
-          color: '棕色',
-          price: '21,800',
-          image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&q=80',
-          category: 'bag',
-          isNew: true,
-          isFavorite: false,
-          colors: [
-            { name: '黑色', value: '#000000' },
-            { name: '棕色', value: '#8B4513' }
-          ]
-        },
-        {
-          id: 3,
-          name: 'Re-Nylon与牛皮革拼接双肩背包',
-          color: '黑色',
-          price: '28,700',
-          image: 'https://images.unsplash.com/photo-1556821552-5f06b5991ce0?w=400&q=80',
-          category: 'bag',
-          isNew: true,
-          isFavorite: false,
-          colors: [
-            { name: '黑色', value: '#000000' },
-            { name: '深棕', value: '#654321' }
-          ]
-        },
         // 服装系列
         {
-          id: 4,
+          id: 1,
           name: '再生尼龙羽绒夹克',
           color: '棕色',
           price: '28,400',
@@ -235,23 +156,24 @@ export default {
             { name: '深绿', value: '#2F5233' }
           ]
         },
+        // 珠宝系列
         {
-          id: 5,
-          name: '黑色羊皮夹克',
-          color: '黑色',
-          price: '32,500',
-          image: 'https://images.unsplash.com/photo-1591047990366-ebc4de0ece35?w=400&q=80',
-          category: 'clothing',
-          isNew: false,
+          id: 2,
+          name: '精致珍珠项链',
+          color: '银色',
+          price: '18,900',
+          image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400&q=80',
+          category: 'jewelry',
+          isNew: true,
           isFavorite: false,
           colors: [
-            { name: '黑色', value: '#000000' },
-            { name: '深棕', value: '#654321' }
+            { name: '银色', value: '#C0C0C0' },
+            { name: '金色', value: '#FFD700' }
           ]
         },
         // 鞋履系列
         {
-          id: 6,
+          id: 3,
           name: '亮面牛皮革乐福鞋',
           color: '棕色',
           price: '10,300',
@@ -264,57 +186,31 @@ export default {
             { name: '黑色', value: '#000000' }
           ]
         },
+        // 香水系列
         {
-          id: 7,
-          name: '皮革中筒靴',
-          color: '黑色',
-          price: '15,800',
-          image: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=400&q=80',
-          category: 'shoes',
+          id: 4,
+          name: '经典香水系列',
+          color: '透明',
+          price: '15,600',
+          image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=400&q=80',
+          category: 'perfume',
           isNew: false,
           isFavorite: false,
           colors: [
-            { name: '黑色', value: '#000000' },
-            { name: '棕色', value: '#8B4513' }
-          ]
-        },
-        {
-          id: 8,
-          name: '高跟皮革靴',
-          color: '红棕',
-          price: '12,900',
-          image: 'https://images.unsplash.com/photo-1608256543803-ba4f8c70ae0b?w=400&q=80',
-          category: 'shoes',
-          isNew: true,
-          isFavorite: false,
-          colors: [
-            { name: '红棕', value: '#8B4513' },
-            { name: '黑色', value: '#000000' }
+            { name: '透明', value: '#FFFFFF' },
+            { name: '琥珀', value: '#FFBF00' }
           ]
         }
       ]
     }
   },
   computed: {
-    filteredProducts() {
-      // 使用 activeCategory 作为缓存键
-      if (this.activeCategory === 0) {
-        return this.products
-      }
-      const selectedCategory = this.categories[this.activeCategory].id
-      // 使用 filter 时避免创建中间数组，直接返回结果
-      return this.products.filter(p => p.category === selectedCategory)
+    displayProducts() {
+      // 返回固定的4个产品
+      return this.products
     }
   },
   methods: {
-    goBack() {
-      uni.navigateBack()
-    },
-    goHome() {
-      uni.switchTab({
-        url: '/pages/index/index'
-      })
-    },
     onProductSelect(product) {
       this.selectedProduct = product
       this.consultForm = {
@@ -325,19 +221,16 @@ export default {
         remarks: ''
       }
     },
-    toggleFavorite(index) {
-      // 在原始 products 数组中查找和更新对应的产品
-      const product = this.filteredProducts[index]
-      if (product) {
-        const originalIndex = this.products.findIndex(p => p.id === product.id)
-        if (originalIndex !== -1) {
-          this.$set(this.products[originalIndex], 'isFavorite', !this.products[originalIndex].isFavorite)
-          uni.showToast({
-            title: this.products[originalIndex].isFavorite ? '已收藏' : '已移除收藏',
-            icon: 'none',
-            duration: 1000
-          })
-        }
+    toggleFavorite(productId) {
+      // 根据产品ID查找和更新产品
+      const productIndex = this.products.findIndex(p => p.id === productId)
+      if (productIndex !== -1) {
+        this.$set(this.products[productIndex], 'isFavorite', !this.products[productIndex].isFavorite)
+        uni.showToast({
+          title: this.products[productIndex].isFavorite ? '已收藏' : '已移除收藏',
+          icon: 'none',
+          duration: 1000
+        })
       }
     },
     onColorChange(e) {
@@ -402,92 +295,6 @@ export default {
   position: relative;
 }
 
-/* 自定义导航栏 */
-.custom-navbar {
-  position: sticky;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  background: #ffffff;
-  padding-top: constant(safe-area-inset-top);
-  padding-top: env(safe-area-inset-top);
-  box-shadow: 0 12rpx 36rpx rgba(0, 0, 0, 0.04);
-
-  .navbar-content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 16rpx 32rpx 76rpx;
-    min-height: 160rpx;
-    gap: 20rpx;
-    position: relative;
-  }
-
-  .nav-pill-left {
-    position: absolute;
-    left: 32rpx;
-    bottom: 12rpx;
-  }
-
-  .nav-title {
-    flex: 1;
-    text-align: center;
-    font-size: 36rpx;
-    color: #000000;
-    font-weight: 600;
-    letter-spacing: 1rpx;
-    min-width: 0;
-    white-space: nowrap;
-    margin-bottom: 22rpx;
-  }
-
-  .nav-pill {
-    display: flex;
-    align-items: center;
-    background: #ffffff;
-    border: 1rpx solid rgba(0, 0, 0, 0.12);
-    border-radius: 999rpx;
-    padding: 0 20rpx;
-    height: 56rpx;
-    box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.06);
-    flex-shrink: 0;
-  }
-
-  .nav-icon-button {
-    width: 52rpx;
-    height: 52rpx;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    transition: background 0.2s, opacity 0.2s;
-
-    &:active {
-      background: rgba(0, 0, 0, 0.06);
-    }
-  }
-
-  .nav-divider {
-    width: 2rpx;
-    height: 36rpx;
-    background: rgba(0, 0, 0, 0.12);
-    margin: 0 16rpx;
-  }
-
-  .icon-arrow-left {
-    width: 48rpx;
-    height: 48rpx;
-    display: block;
-  }
-
-  .icon-home {
-    width: 48rpx;
-    height: 48rpx;
-    display: block;
-  }
-}
-
 /* 页面头部 */
 .header-section {
   padding: 60rpx 40rpx 40rpx;
@@ -507,35 +314,6 @@ export default {
     font-size: 28rpx;
     color: #666666;
     line-height: 1.5;
-  }
-}
-
-/* 分类标签 */
-.category-tabs {
-  display: flex;
-  gap: 16rpx;
-  padding: 0 40rpx 24rpx;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  .category-tab {
-    flex-shrink: 0;
-    padding: 12rpx 24rpx;
-    background: #f5f5f5;
-    border-radius: 24rpx;
-    font-size: 26rpx;
-    color: #666666;
-    cursor: pointer;
-
-    &.active {
-      background: #000000;
-      color: #ffffff;
-      font-weight: 600;
-    }
   }
 }
 

@@ -55,11 +55,11 @@
     <!-- 快速访问 -->
     <view class="quick-access-section">
       <view class="quick-access-item" @tap="onQuickAccessTap('wishlist')">
-        <text class="quick-access-icon">♡</text>
+        <image class="quick-access-icon" src="/static/icons/quick-wishlist.svg" mode="aspectFit"></image>
         <text class="quick-access-label">我的心愿单</text>
       </view>
       <view class="quick-access-item" @tap="onQuickAccessTap('addresses')">
-        <text class="quick-access-icon">◉</text>
+        <image class="quick-access-icon" src="/static/icons/quick-address.svg" mode="aspectFit"></image>
         <text class="quick-access-label">我的地址簿</text>
       </view>
     </view>
@@ -67,11 +67,11 @@
     <!-- 法律和授权 -->
     <view class="legal-access-section">
       <view class="legal-item" @tap="onLegalTap('terms')">
-        <text class="legal-icon">⊕</text>
+        <image class="legal-icon" src="/static/icons/legal-terms.svg" mode="aspectFit"></image>
         <text class="legal-label">法律条款</text>
       </view>
       <view class="legal-item" @tap="onLegalTap('privacy')">
-        <text class="legal-icon">◊</text>
+        <image class="legal-icon" src="/static/icons/legal-privacy.svg" mode="aspectFit"></image>
         <text class="legal-label">个人信息授权</text>
       </view>
     </view>
@@ -429,8 +429,9 @@ export default {
     }
 
     .quick-access-icon {
+      width: 72rpx;
+      height: 72rpx;
       display: block;
-      font-size: 48rpx;
       margin-bottom: 16rpx;
     }
 
@@ -470,8 +471,9 @@ export default {
     }
 
     .legal-icon {
+      width: 72rpx;
+      height: 72rpx;
       display: block;
-      font-size: 48rpx;
       margin-bottom: 16rpx;
     }
 

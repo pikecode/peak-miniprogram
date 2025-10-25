@@ -1,13 +1,11 @@
 <template>
   <view class="edit-profile-page">
-    <!-- 表单内容 -->
     <scroll-view class="form-container" scroll-y="true">
-      <!-- 个人信息部分 -->
-      <view class="form-section">
-        <text class="section-title">个人信息</text>
+      <view class="form-card">
+        <text class="section-title">基本信息</text>
 
-        <!-- 称谓 -->
-        <view class="form-group">
+        <view class="field">
+          <text class="field-label">称谓</text>
           <view class="form-control">
             <picker :range="['先生', '女士']" @change="onSalutationChange" class="picker-wrapper">
               <view class="picker-content">
@@ -18,39 +16,32 @@
           </view>
         </view>
 
-        <!-- 姓 -->
-        <view class="form-group">
+        <view class="field">
+          <text class="field-label">姓氏</text>
           <view class="form-control">
             <input
               class="form-input"
               v-model="formData.lastName"
-              placeholder="输入姓氏"
+              placeholder="输入您的姓氏"
               placeholder-class="input-placeholder"
             />
           </view>
         </view>
 
-        <!-- 名 -->
-        <view class="form-group">
+        <view class="field">
+          <text class="field-label">名字</text>
           <view class="form-control">
             <input
               class="form-input"
               v-model="formData.firstName"
-              placeholder="输入名字"
+              placeholder="输入您的名字"
               placeholder-class="input-placeholder"
             />
           </view>
         </view>
 
-        <!-- 电话 -->
-        <view class="form-group">
-          <view class="form-control">
-            <text class="phone-label">微信授权手机号码</text>
-          </view>
-        </view>
-
-        <!-- 出生日期 -->
-        <view class="form-group">
+        <view class="field">
+          <text class="field-label">出生日期</text>
           <view class="form-control date-group">
             <picker :range="yearRange" @change="onYearChange" class="date-picker">
               <view class="picker-content">
@@ -71,10 +62,23 @@
               </view>
             </picker>
           </view>
+          <text class="field-helper">我们会在您的生日月为您推送专属惊喜。</text>
+        </view>
+      </view>
+
+      <view class="form-card">
+        <text class="section-title">联系方式与地区</text>
+
+        <view class="field">
+          <text class="field-label">手机号码</text>
+          <view class="form-control readonly-control">
+            <text class="phone-value">{{ formData.phone }}</text>
+            <text class="sync-tag">已同步微信</text>
+          </view>
         </view>
 
-        <!-- 省份 -->
-        <view class="form-group">
+        <view class="field">
+          <text class="field-label">常驻地区</text>
           <view class="form-control location-group">
             <picker :range="provinces" @change="onProvinceChange" class="location-picker">
               <view class="picker-content">
@@ -98,9 +102,9 @@
         </view>
       </view>
 
-      <!-- 授权复选框 -->
-      <view class="checkbox-group">
-        <!-- 第一个复选框 -->
+      <view class="form-card">
+        <text class="section-title">隐私授权</text>
+
         <view class="checkbox-item">
           <view class="checkbox-wrapper">
             <view class="checkbox" :class="{ checked: formData.agree1 }" @tap="toggleCheckbox1">
@@ -108,19 +112,18 @@
             </view>
           </view>
           <view class="checkbox-content">
-            <view class="checkbox-text">
-              <text class="highlight">*我希望在 RUIZHU 小程序上创建我的帐户，</text>
-              <text>并且知悉我的个人信息将用于提供如</text>
-              <text class="highlight">隐私政策</text>
-              <text>中所述所要求的服务。</text>
-            </view>
-            <view class="checkbox-description">
-              <text>用于创建您的在线帐户，您需要提供您的姓名、手机号码和位置。如果您拒绝将导致本服务服务无法正常运行，我们将无法为您提供服务。</text>
-            </view>
+            <text class="checkbox-title">创建并维护我的 RUIZHU 帐户</text>
+            <text class="checkbox-body">
+              *我知悉并同意按照
+              <text class="link-text" @tap="goPrivacy">隐私政策</text>
+              收集与使用我的个人信息，以提供我所选择的服务。
+            </text>
+            <text class="checkbox-footnote">
+              该授权为创建账户所必需，如拒绝我们将无法为您开通帐户。
+            </text>
           </view>
         </view>
 
-        <!-- 第二个复选框 -->
         <view class="checkbox-item">
           <view class="checkbox-wrapper">
             <view class="checkbox" :class="{ checked: formData.agree2 }" @tap="toggleCheckbox2">
@@ -128,25 +131,22 @@
             </view>
           </view>
           <view class="checkbox-content">
-            <view class="checkbox-text">
-              <text>我亦希望加入睿珠集团顾客数据库，以便获得定制的全球客户服务，并享受为注册会员保留的专属服务和优惠。</text>
-            </view>
-            <view class="checkbox-description">
-              <text>用于注册目的，您需要提供您的手机、号码。如果您拒绝将导致本服务服务无法正常运行，我们将无法为您提供服务。</text>
-            </view>
+            <text class="checkbox-title">加入睿珠会员数据库</text>
+            <text class="checkbox-body">
+              我愿意接收基于我的兴趣定制的全球客户服务、专属活动邀请以及会员礼遇信息。
+            </text>
+            <text class="checkbox-footnote">此授权可随时在“我的”-“设置”中撤回。</text>
           </view>
         </view>
       </view>
 
-      <!-- 权限说明 -->
       <view class="permission-info">
-        <text>我亦同意贵司为下列可选目的的收集、使用与披露我的个人信息：</text>
+        <text>如需了解更多信息，请查阅《个人信息授权与使用说明》或联系专属顾问。</text>
       </view>
 
-      <!-- 保存按钮 -->
       <view class="button-group">
         <view class="save-btn" @tap="handleSave">
-          <text>保存</text>
+          <text>保存信息</text>
         </view>
       </view>
     </scroll-view>
@@ -214,6 +214,11 @@ export default {
     toggleCheckbox2() {
       this.formData.agree2 = !this.formData.agree2
     },
+    goPrivacy() {
+      uni.navigateTo({
+        url: '/pages/legal/legal'
+      })
+    },
     handleSave() {
       if (!this.formData.agree1) {
         uni.showToast({
@@ -236,287 +241,247 @@ export default {
 
 <style lang="scss" scoped>
 .edit-profile-page {
-  height: 100vh;
-  background: #ffffff;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: #f6f6f6;
 }
 
-/* 表单容器 */
 .form-container {
   flex: 1;
-  overflow-y: auto;
-  padding: 40rpx 24rpx;
-  width: 100%;
+  padding: 0 32rpx 80rpx;
   box-sizing: border-box;
 }
 
-/* 表单部分 */
-.form-section {
-  margin-bottom: 40rpx;
+.form-card {
+  background: #ffffff;
+  border-radius: 28rpx;
+  padding: 36rpx 32rpx;
+  margin-top: 32rpx;
+  box-shadow: 0 16rpx 40rpx rgba(0, 0, 0, 0.04);
 
   .section-title {
-    display: block;
     font-size: 32rpx;
     font-weight: 600;
-    color: #000000;
-    margin-bottom: 32rpx;
+    color: #111111;
+    margin-bottom: 28rpx;
   }
 }
 
-/* 表单组 */
-.form-group {
-  margin-bottom: 40rpx;
+.field {
+  margin-bottom: 32rpx;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .field-label {
+    display: block;
+    font-size: 26rpx;
+    color: #666666;
+    margin-bottom: 12rpx;
+  }
+
+  .field-helper {
+    display: block;
+    margin-top: 12rpx;
+    font-size: 22rpx;
+    color: #999999;
+  }
+}
+
+.form-control {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  border-bottom: 1px solid #eeeeee;
+  padding-bottom: 18rpx;
+}
+
+.form-input {
+  flex: 1;
+  font-size: 30rpx;
+  color: #111111;
+  background: transparent;
+}
+
+.input-placeholder {
+  color: #cccccc;
+  font-size: 28rpx;
+}
+
+.picker-wrapper,
+.date-picker,
+.location-picker {
+  flex: 1;
+}
+
+.picker-content {
+  display: flex;
+  align-items: center;
   width: 100%;
 
-  .form-control {
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #e0e0e0;
-    padding-bottom: 12rpx;
-    min-width: 0;
+  .picker-value {
+    flex: 1;
+    font-size: 30rpx;
+    color: #111111;
+  }
+
+  .picker-arrow {
+    font-size: 32rpx;
+    color: #bbbbbb;
+    margin-left: 12rpx;
+  }
+}
+
+.date-group {
+  gap: 24rpx;
+  border-bottom: none;
+  padding-bottom: 0;
+
+  .date-picker {
+    border-bottom: 1px solid #eeeeee;
+    padding-bottom: 18rpx;
 
     .picker-value {
-      flex: 1;
       font-size: 28rpx;
-      color: #000000;
     }
 
     .picker-arrow {
-      font-size: 28rpx;
-      color: #999999;
-    }
-
-    .phone-label {
-      font-size: 28rpx;
-      color: #999999;
-    }
-  }
-
-  .form-input {
-    flex: 1;
-    font-size: 28rpx;
-    color: #000000;
-    width: 100%;
-    padding: 0;
-    margin: 0;
-    background: transparent;
-  }
-
-  .input-placeholder {
-    color: #cccccc;
-    font-size: 28rpx;
-  }
-
-  .picker-wrapper {
-    display: flex;
-    flex: 1;
-    width: 100%;
-
-    .picker-content {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      width: 100%;
-      gap: 4rpx;
-
-      .picker-value {
-        flex: 1;
-        font-size: 28rpx;
-        color: #000000;
-      }
-
-      .picker-arrow {
-        font-size: 28rpx;
-        color: #999999;
-        flex-shrink: 0;
-      }
+      font-size: 26rpx;
     }
   }
 }
 
-/* 日期选择组 */
-.date-group {
-  display: flex;
-  gap: 12rpx;
-  align-items: center;
-  width: 100%;
-  border-bottom: none !important;
-  padding-bottom: 0 !important;
-  flex-direction: row;
-
-  .date-picker {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #e0e0e0;
-    padding-bottom: 12rpx;
-    min-width: 0;
-
-    .picker-content {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      width: 100%;
-      gap: 4rpx;
-
-      .picker-value {
-        flex: 1;
-        font-size: 26rpx;
-        color: #000000;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-
-      .picker-arrow {
-        font-size: 20rpx;
-        color: #999999;
-        flex-shrink: 0;
-      }
-    }
-  }
-}
-
-/* 地区选择组 */
 .location-group {
-  display: flex;
-  gap: 12rpx;
-  align-items: center;
-  width: 100%;
-  border-bottom: none !important;
-  padding-bottom: 0 !important;
-  flex-direction: row;
+  gap: 18rpx;
+  border-bottom: none;
+  padding-bottom: 0;
 
   .location-picker {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #e0e0e0;
-    padding-bottom: 12rpx;
-    min-width: 0;
+    border-bottom: 1px solid #eeeeee;
+    padding-bottom: 18rpx;
 
-    .picker-content {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      width: 100%;
-      gap: 4rpx;
+    .picker-value {
+      font-size: 28rpx;
+    }
 
-      .picker-value {
-        flex: 1;
-        font-size: 26rpx;
-        color: #000000;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-
-      .picker-arrow {
-        font-size: 20rpx;
-        color: #999999;
-        flex-shrink: 0;
-      }
+    .picker-arrow {
+      font-size: 26rpx;
     }
   }
 }
 
-/* 复选框组 */
-.checkbox-group {
-  margin-top: 60rpx;
-  margin-bottom: 40rpx;
+.readonly-control {
+  border-bottom: none;
+  padding-bottom: 0;
+  justify-content: space-between;
 
-  .checkbox-item {
-    display: flex;
-    gap: 16rpx;
-    margin-bottom: 40rpx;
-
-    .checkbox-wrapper {
-      flex: 0 0 32rpx;
-      padding-top: 8rpx;
-
-      .checkbox {
-        width: 32rpx;
-        height: 32rpx;
-        border: 2px solid #000000;
-        border-radius: 4rpx;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.2s ease;
-
-        &.checked {
-          background: #000000;
-
-          .checkbox-icon {
-            color: #ffffff;
-            font-size: 18rpx;
-            font-weight: 600;
-          }
-        }
-
-        .checkbox-icon {
-          display: none;
-        }
-      }
-    }
-
-    .checkbox-content {
-      flex: 1;
-
-      .checkbox-text {
-        font-size: 26rpx;
-        line-height: 1.6;
-        color: #000000;
-        margin-bottom: 12rpx;
-
-        .highlight {
-          font-weight: 600;
-        }
-      }
-
-      .checkbox-description {
-        font-size: 22rpx;
-        color: #999999;
-        line-height: 1.6;
-      }
-    }
-  }
-}
-
-/* 权限信息 */
-.permission-info {
-  font-size: 26rpx;
-  color: #000000;
-  line-height: 1.6;
-  margin-bottom: 60rpx;
-}
-
-/* 按钮组 */
-.button-group {
-  margin-top: 40rpx;
-  margin-bottom: 60rpx;
-
-  .save-btn {
-    width: 100%;
-    height: 88rpx;
-    background: #000000;
-    color: #ffffff;
+  .phone-value {
     font-size: 32rpx;
+    color: #111111;
     font-weight: 600;
+  }
+
+  .sync-tag {
+    font-size: 22rpx;
+    color: #999999;
+    background: #f4f4f4;
+    border-radius: 999rpx;
+    padding: 6rpx 16rpx;
+  }
+}
+
+.checkbox-item {
+  display: flex;
+  gap: 20rpx;
+  margin-bottom: 32rpx;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.checkbox-wrapper {
+  padding-top: 8rpx;
+
+  .checkbox {
+    width: 36rpx;
+    height: 36rpx;
+    border: 2rpx solid #111111;
     border-radius: 8rpx;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
+    transition: background 0.2s;
+
+    &.checked {
+      background: #111111;
+
+      .checkbox-icon {
+        color: #ffffff;
+        font-size: 20rpx;
+      }
+    }
+  }
+}
+
+.checkbox-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+
+  .checkbox-title {
+    font-size: 28rpx;
+    font-weight: 600;
+    color: #111111;
+  }
+
+  .checkbox-body {
+    font-size: 24rpx;
+    line-height: 1.6;
+    color: #444444;
+
+    .link-text {
+      color: #000000;
+      border-bottom: 2rpx solid #111111;
+    }
+  }
+
+  .checkbox-footnote {
+    font-size: 22rpx;
+    color: #999999;
+  }
+}
+
+.permission-info {
+  margin-top: 32rpx;
+  font-size: 24rpx;
+  color: #666666;
+  line-height: 1.6;
+  padding: 24rpx;
+  border-radius: 20rpx;
+  background: #ffffff;
+}
+
+.button-group {
+  margin-top: 40rpx;
+
+  .save-btn {
+    width: 100%;
+    height: 96rpx;
+    border-radius: 999rpx;
+    background: #111111;
+    color: #ffffff;
+    font-size: 32rpx;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 20rpx 40rpx rgba(0, 0, 0, 0.15);
 
     &:active {
-      background: #333333;
-      transform: scale(0.98);
+      opacity: 0.85;
     }
   }
 }

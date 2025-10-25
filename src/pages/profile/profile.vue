@@ -18,14 +18,16 @@
             <view class="banner-text-overlay">
               <text class="banner-brand">RUIZHU</text>
               <view class="banner-welcome">
-                <text class="welcome-title">欢迎</text>
-                <view class="welcome-desc-row">
-                  <text class="welcome-desc">{{ userGreeting }}先生，您好</text>
-                  <text class="welcome-icon edit-icon" @tap="onEditProfile">✎</text>
-                  <text class="welcome-icon eye-icon" @tap="onToggleVisibility">{{ showGreeting ? '◎' : '◎' }}</text>
+              <view class="welcome-desc-row">
+                <text class="welcome-desc">{{ userGreeting }}先生，您好</text>
+                <view class="welcome-actions">
+                  <view class="action-icon edit" @tap="onEditProfile">
+                    <text>✎</text>
+                  </view>
                 </view>
               </view>
             </view>
+          </view>
           </view>
         </swiper-item>
       </swiper>
@@ -97,7 +99,6 @@ export default {
     return {
       appVersion: '1.0.0',
       userGreeting: '张**',
-      showGreeting: true,
       indicatorColor: 'rgba(255, 255, 255, 0.5)',
       indicatorActiveColor: '#ffffff',
       currentBannerIndex: 0,
@@ -216,15 +217,6 @@ export default {
       uni.navigateTo({
         url: '/pages/profile/edit'
       })
-    },
-    onToggleVisibility() {
-      this.showGreeting = !this.showGreeting
-      const message = this.showGreeting ? '已显示' : '已隐藏'
-      uni.showToast({
-        title: message,
-        icon: 'none',
-        duration: 1000
-      })
     }
   }
 }
@@ -283,14 +275,6 @@ export default {
       flex-direction: column;
       align-items: center;
 
-      .welcome-title {
-        display: block;
-        font-size: 28rpx;
-        color: #ffffff;
-        letter-spacing: 1rpx;
-        margin-bottom: 12rpx;
-      }
-
       .welcome-desc-row {
         display: flex;
         align-items: center;
@@ -303,24 +287,32 @@ export default {
           color: #ffffff;
           letter-spacing: 1rpx;
         }
+        .welcome-actions {
+          display: flex;
+          align-items: center;
 
-        .welcome-icon {
-          display: block;
-          font-size: 28rpx;
-          cursor: pointer;
+          .action-icon {
+            width: 44rpx;
+            height: 44rpx;
+            border-radius: 50%;
+            border: 1rpx solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 12rpx;
+            transition: opacity 0.2s;
 
-          &:active {
-            opacity: 0.8;
-          }
+            text {
+              color: #ffffff;
+              font-size: 24rpx;
+            }
 
-          &.edit-icon {
-            opacity: 0.9;
-          }
-
-          &.eye-icon {
-            opacity: 0.9;
+            &:active {
+              opacity: 0.8;
+            }
           }
         }
+
       }
     }
   }
